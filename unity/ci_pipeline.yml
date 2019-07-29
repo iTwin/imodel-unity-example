@@ -1,0 +1,54 @@
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
+# https://github.com/Dinomite-Studios/unity-azure-pipelines-tasks
+
+name: imodel-unity-example-$(Date:yyyyMMdd)$(Rev:.r)
+pool:
+  name: iModelTechCI
+  demands: Agent.OS -equals Windows_NT
+trigger:
+  branches:
+    include: [ master ]
+  paths:
+    include: [ unity ]
+
+steps:
+  - task: UnityActivateLicenseTask@1
+    displayName: 'Acquire License'
+    inputs:
+      username: '$(UNITY_USERNAME)'
+      password: '$(UNITY_PASSWORD)'
+      serial: '$(UNITY_SERIAL)'
+      unityEditorsPathMode: 'environmentVariable'
+      unityProjectPath: 'unity/'
+
+  - task: UnityBuildTask@2
+    displayName: 'Build Windows Desktop'
+    inputs:
+      buildTarget: 'Win64'
+      unityEditorsPathMode: 'environmentVariable'
+      unityProjectPath: 'unity/'
+      commandLineArgumentsMode: 'default'
+      noGraphics: true
+
+  - task: UnityBuildTask@2
+    displayName: 'Build UWP'
+    inputs:
+      buildTarget: 'WindowsStoreApps'
+      unityEditorsPathMode: 'environmentVariable'
+      unityProjectPath: 'unity/'
+      commandLineArgumentsMode: 'default'
+      noGraphics: true
+
+  - task: archiveandpublishartifact@0
+    displayName: 'Publish Windows Desktop'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/unity/Build/Win64'
+      archiveFolder: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'imodel-unity-example-win64'
+
+  - task: archiveandpublishartifact@0
+    displayName: 'Publish UWP'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/unity/Build/WindowsStoreApps'
+      archiveFolder: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'imodel-unity-example-windowsstoreapps'

@@ -1,0 +1,101 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) 2019 Bentley Systems, Incorporated. All rights reserved.
+ * Licensed under the MIT License. See LICENSE.md in the project root for license terms.
+ *--------------------------------------------------------------------------------------------*/
+syntax = "proto3";
+option csharp_namespace = "Bentley.Protobuf";
+
+message RequestWrapper {
+  uint32 requestId = 1;
+  oneof msg {
+    SelectElementIdsRequest selectElementIdsRequest = 2;
+    ExportMeshesRequest exportMeshesRequest = 3;
+    TextureRequest textureRequest = 4;
+    ElementTooltipRequest elementTooltipRequest = 5;
+    ProjectExtentsRequest projectExtentsRequest = 6;
+    CameraViewsRequest cameraViewsRequest = 7;
+  }
+}
+
+message ReplyWrapper {
+  uint32 requestId = 1;
+  bool requestHasMoreReplies = 2;
+  oneof msg {
+    SelectElementIdsReply selectElementIdsReply = 3;
+    ExportMeshesReply exportMeshesReply = 4; 
+    TextureReply textureReply = 5;
+    ElementTooltipReply elementTooltipReply = 6;
+    ProjectExtentsReply projectExtentsReply = 7;
+    CameraViewsReply cameraViewsReply = 8;
+  }
+}
+
+message SelectElementIdsRequest {
+  string selectFilter = 1;
+}
+
+message SelectElementIdsReply {
+  repeated string elementIds = 1;
+}
+
+message ExportMeshesRequest {
+  repeated string elementIds = 1;
+  double chordTol = 2;
+}
+
+message ExportMeshesReply {
+  // Will always be present on valid mesh
+  string elementId = 1;
+  uint32 color = 2;
+  uint32 indexCount = 3;
+  uint32 vertexCount = 4;
+  bytes meshData = 5;
+  // Will only be present if the mesh has a texture
+  string textureId = 6;
+}
+
+message TextureRequest {
+  string textureId = 1;
+}
+
+message TextureReply {
+  string textureId = 1;
+  bytes textureData = 2;
+}
+
+message ElementTooltipRequest {
+  string elementId = 1;
+}
+
+message ElementTooltipReply {
+  string elementId = 1;
+  string classLabel = 2;
+  string categoryLabel = 3;
+  string modelLabel = 4;
+}
+
+message ProjectExtentsRequest {
+}
+
+message ProjectExtentsReply {
+  double minX = 1;
+  double minY = 2;
+  double minZ = 3;
+  double maxX = 4;
+  double maxY = 5;
+  double maxZ = 6;
+}
+
+message CameraViewsRequest {
+}
+
+message CameraViewsReply {
+  string elementId = 1;
+  string displayLabel = 2;
+  double eyePointX = 3;
+  double eyePointY = 4;
+  double eyePointZ = 5;
+  double yaw = 6;
+  double pitch = 7;
+  double roll = 8;
+}
