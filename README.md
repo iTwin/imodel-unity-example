@@ -12,7 +12,7 @@ development purposes.
 * Unity 2019.1 or later
 * Node 10
 * Windows
-    * Mac OS X and Linux should work but are untested. Developers on these platforms will need to add the
+    * Linux should work but is untested. Developers on this platform will need to add the
     appropriate version of the [protobuf-compiler](https://developers.google.com/protocol-buffers/docs/downloads)
 
 ### Setup
