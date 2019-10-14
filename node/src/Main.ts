@@ -2,7 +2,7 @@
 * Copyright (c) 2019 Bentley Systems, Incorporated. All rights reserved.
 * Licensed under the MIT License. See LICENSE.md in the project root for license terms.
 *--------------------------------------------------------------------------------------------*/
-import { ExportGraphicsInfo, IModelHost, IModelDb, ECSqlStatement, Texture, ViewDefinition3d } from "@bentley/imodeljs-backend";
+import { ExportGraphicsInfo, IModelHost, IModelDb, ECSqlStatement, Texture, ViewDefinition3d, GeometricElement } from "@bentley/imodeljs-backend";
 import { Id64Array, DbResult, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { Angle } from "@bentley/geometry-core";
 import { IExportMeshesReply, IElementTooltipReply, ITextureReply, IProjectExtentsReply,
@@ -73,7 +73,7 @@ function handleExportMeshesRequest(socket: ws, wrapper: RequestWrapper) {
 function handleTooltipRequest(socket: ws, wrapper: RequestWrapper) {
   const request = wrapper.elementTooltipRequest!;
   if (!request.elementId) { logError("ElementTooltipRequest missing elementId"); return; }
-  const element = iModel.elements.getElement(request.elementId);
+  const element = iModel.elements.getElement<GeometricElement>(request.elementId);
   if (!element) { logError(`Could not load element ${request.elementId}`); return; }
 
   const elementTooltipReply: IElementTooltipReply = {
