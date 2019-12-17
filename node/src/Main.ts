@@ -7,6 +7,8 @@ import { Id64Array, DbResult, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { Angle } from "@bentley/geometry-core";
 import { IExportMeshesReply, IElementTooltipReply, ITextureReply, IProjectExtentsReply,
   ICameraViewsReply, IReplyWrapper, ReplyWrapper, RequestWrapper } from "./IModelRpc_pb";
+import { IModelSelectorData, launchIModelSelector } from "@bentley/imodel-selector";
+import { AccessToken, AuthorizedClientRequestContext } from "@bentley/imodeljs-clients";
 import * as ws from "ws";
 import * as yargs from "yargs";
 
@@ -39,11 +41,11 @@ function createMeshReply(info: ExportGraphicsInfo, requestId: number): Uint8Arra
   Buffer.from(params.buffer).copy(meshData, offset);
 
   const exportMeshesReply: IExportMeshesReply = {
-      elementId: info.elementId,
-      color: info.color,
-      indexCount: indices.length,
-      vertexCount: points.length / 3,
-      meshData,
+    elementId: info.elementId,
+    color: info.color,
+    indexCount: indices.length,
+    vertexCount: points.length / 3,
+    meshData,
   };
   if (info.textureId) exportMeshesReply.textureId = info.textureId;
 
@@ -180,14 +182,34 @@ function onSocketConnection(socket: ws) {
   socket.on("error", logErrorObject);
 }
 
-function startServer(iModelName: string) {
+async function startServer(iModelName: string) {
   IModelHost.startup();
   Logger.initializeToConsole();
   Logger.setLevelDefault(LogLevel.Warning);
   Logger.setLevel(LOG_CATEGORY, LogLevel.Trace);
 
-  iModel = IModelDb.openSnapshot(iModelName);
-  logInfo(`Opened ${iModelName} successfully.`);
+  if (iModelName) {
+    iModel = IModelDb.openSnapshot(iModelName);
+    logInfo(`Opened ${iModelName} successfully.`);
+  } else {
+    const clientId = "temporary-vr-app-for-hatch";
+    const scope = "openid email imodelhub context-registry-service:read-only urlps-third-party offline_access";
+    const imodelSelectorData: IModelSelectorData | undefined = await launchIModelSelector({
+      client_id: clientId, scope, response_type: "code",
+    });
+    if (!imodelSelectorData) {
+      logError("Login failed");
+      return;
+    }
+    const accessToken: AccessToken | undefined = await imodelSelectorData.getAccessToken();
+    if (!accessToken) {
+      logError("AccessToken acquisition failed");
+      return;
+    }
+    const reqContext = new AuthorizedClientRequestContext(accessToken);
+    iModel = await IModelDb.open(reqContext, imodelSelectorData.contextId!, imodelSelectorData.imodelId!);
+    logInfo(`Opened iModel successfully.`);
+  }
 
   const serverPort = 3005; // Must match EntryPoint.cs
   const server = new ws.Server({ port: serverPort });
@@ -197,8 +219,9 @@ function startServer(iModelName: string) {
 }
 
 yargs.usage("Launch an iModel.js server to provide data over a web socket.");
-yargs.required("input", "The input BIM");
+yargs.command("[input]", "The input BIM");
 interface UnityBackendArgs { input: string; }
 const args = yargs.parse() as yargs.Arguments<UnityBackendArgs>;
 
+// tslint:disable-next-line: no-floating-promises
 startServer(args.input);
