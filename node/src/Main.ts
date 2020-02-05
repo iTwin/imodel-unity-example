@@ -8,7 +8,8 @@ import { Angle } from "@bentley/geometry-core";
 import { IExportMeshesReply, IElementTooltipReply, ITextureReply, IProjectExtentsReply,
   ICameraViewsReply, IReplyWrapper, ReplyWrapper, RequestWrapper } from "./IModelRpc_pb";
 import { IModelSelectorData, launchIModelSelector } from "@bentley/imodel-selector";
-import { AccessToken, AuthorizedClientRequestContext } from "@bentley/imodeljs-clients";
+import { AccessToken, AuthorizedClientRequestContext, Config } from "@bentley/imodeljs-clients";
+import setupEnv from "./configuration";
 import * as ws from "ws";
 import * as yargs from "yargs";
 
@@ -192,11 +193,9 @@ async function startServer(iModelName: string) {
     iModel = IModelDb.openSnapshot(iModelName);
     logInfo(`Opened ${iModelName} successfully.`);
   } else {
-    const clientId = "temporary-vr-app-for-hatch";
-    const scope = "openid email imodelhub context-registry-service:read-only urlps-third-party offline_access";
-    const imodelSelectorData: IModelSelectorData | undefined = await launchIModelSelector({
-      client_id: clientId, scope, response_type: "code",
-    });
+    const clientId = Config.App.get("imjs_client_id");
+    const scope = Config.App.get("imjs_scope");
+    const imodelSelectorData: IModelSelectorData | undefined = await launchIModelSelector({client_id: clientId, scope});
     if (!imodelSelectorData) {
       logError("Login failed");
       return;
@@ -222,6 +221,9 @@ yargs.usage("Launch an iModel.js server to provide data over a web socket.");
 yargs.command("[input]", "The input BIM");
 interface UnityBackendArgs { input: string; }
 const args = yargs.parse() as yargs.Arguments<UnityBackendArgs>;
+
+// setup environment
+setupEnv();
 
 // tslint:disable-next-line: no-floating-promises
 startServer(args.input);
