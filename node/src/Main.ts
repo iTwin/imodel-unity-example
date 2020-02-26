@@ -222,8 +222,7 @@ yargs.command("[input]", "The input BIM");
 interface UnityBackendArgs { input: string; }
 const args = yargs.parse() as yargs.Arguments<UnityBackendArgs>;
 
-// setup environment
 setupEnv();
 
-// tslint:disable-next-line: no-floating-promises
-startServer(args.input);
+startServer(args.input)
+  .catch((reason) => { process.stdout.write(reason + "\n"); });
