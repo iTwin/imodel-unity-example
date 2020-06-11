@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright © 2019 Bentley Systems, Inc.
+Copyright ï¿½ 2019-2020 Bentley Systems, Inc.
 
 All rights reserved.
 
