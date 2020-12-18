@@ -1,8 +1,3 @@
-/*---------------------------------------------------------------------------------------------
-* Copyright (c) Bentley Systems, Incorporated. All rights reserved.
-* See LICENSE.md in the project root for license terms and full copyright notice.
-*--------------------------------------------------------------------------------------------*/
-
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
@@ -138,19 +133,19 @@ $root.RequestWrapper = (function() {
     RequestWrapper.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.requestId != null && message.hasOwnProperty("requestId"))
+        if (message.requestId != null && Object.hasOwnProperty.call(message, "requestId"))
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.requestId);
-        if (message.selectElementIdsRequest != null && message.hasOwnProperty("selectElementIdsRequest"))
+        if (message.selectElementIdsRequest != null && Object.hasOwnProperty.call(message, "selectElementIdsRequest"))
             $root.SelectElementIdsRequest.encode(message.selectElementIdsRequest, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.exportMeshesRequest != null && message.hasOwnProperty("exportMeshesRequest"))
+        if (message.exportMeshesRequest != null && Object.hasOwnProperty.call(message, "exportMeshesRequest"))
             $root.ExportMeshesRequest.encode(message.exportMeshesRequest, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.textureRequest != null && message.hasOwnProperty("textureRequest"))
+        if (message.textureRequest != null && Object.hasOwnProperty.call(message, "textureRequest"))
             $root.TextureRequest.encode(message.textureRequest, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.elementTooltipRequest != null && message.hasOwnProperty("elementTooltipRequest"))
+        if (message.elementTooltipRequest != null && Object.hasOwnProperty.call(message, "elementTooltipRequest"))
             $root.ElementTooltipRequest.encode(message.elementTooltipRequest, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-        if (message.projectExtentsRequest != null && message.hasOwnProperty("projectExtentsRequest"))
+        if (message.projectExtentsRequest != null && Object.hasOwnProperty.call(message, "projectExtentsRequest"))
             $root.ProjectExtentsRequest.encode(message.projectExtentsRequest, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.cameraViewsRequest != null && message.hasOwnProperty("cameraViewsRequest"))
+        if (message.cameraViewsRequest != null && Object.hasOwnProperty.call(message, "cameraViewsRequest"))
             $root.CameraViewsRequest.encode(message.cameraViewsRequest, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         return writer;
     };
@@ -551,21 +546,21 @@ $root.ReplyWrapper = (function() {
     ReplyWrapper.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.requestId != null && message.hasOwnProperty("requestId"))
+        if (message.requestId != null && Object.hasOwnProperty.call(message, "requestId"))
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.requestId);
-        if (message.requestHasMoreReplies != null && message.hasOwnProperty("requestHasMoreReplies"))
+        if (message.requestHasMoreReplies != null && Object.hasOwnProperty.call(message, "requestHasMoreReplies"))
             writer.uint32(/* id 2, wireType 0 =*/16).bool(message.requestHasMoreReplies);
-        if (message.selectElementIdsReply != null && message.hasOwnProperty("selectElementIdsReply"))
+        if (message.selectElementIdsReply != null && Object.hasOwnProperty.call(message, "selectElementIdsReply"))
             $root.SelectElementIdsReply.encode(message.selectElementIdsReply, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.exportMeshesReply != null && message.hasOwnProperty("exportMeshesReply"))
+        if (message.exportMeshesReply != null && Object.hasOwnProperty.call(message, "exportMeshesReply"))
             $root.ExportMeshesReply.encode(message.exportMeshesReply, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.textureReply != null && message.hasOwnProperty("textureReply"))
+        if (message.textureReply != null && Object.hasOwnProperty.call(message, "textureReply"))
             $root.TextureReply.encode(message.textureReply, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-        if (message.elementTooltipReply != null && message.hasOwnProperty("elementTooltipReply"))
+        if (message.elementTooltipReply != null && Object.hasOwnProperty.call(message, "elementTooltipReply"))
             $root.ElementTooltipReply.encode(message.elementTooltipReply, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.projectExtentsReply != null && message.hasOwnProperty("projectExtentsReply"))
+        if (message.projectExtentsReply != null && Object.hasOwnProperty.call(message, "projectExtentsReply"))
             $root.ProjectExtentsReply.encode(message.projectExtentsReply, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.cameraViewsReply != null && message.hasOwnProperty("cameraViewsReply"))
+        if (message.cameraViewsReply != null && Object.hasOwnProperty.call(message, "cameraViewsReply"))
             $root.CameraViewsReply.encode(message.cameraViewsReply, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         return writer;
     };
@@ -901,7 +896,7 @@ $root.SelectElementIdsRequest = (function() {
     SelectElementIdsRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.selectFilter != null && message.hasOwnProperty("selectFilter"))
+        if (message.selectFilter != null && Object.hasOwnProperty.call(message, "selectFilter"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.selectFilter);
         return writer;
     };
@@ -1304,7 +1299,7 @@ $root.ExportMeshesRequest = (function() {
         if (message.elementIds != null && message.elementIds.length)
             for (var i = 0; i < message.elementIds.length; ++i)
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementIds[i]);
-        if (message.chordTol != null && message.hasOwnProperty("chordTol"))
+        if (message.chordTol != null && Object.hasOwnProperty.call(message, "chordTol"))
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.chordTol);
         return writer;
     };
@@ -1562,17 +1557,17 @@ $root.ExportMeshesReply = (function() {
     ExportMeshesReply.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.elementId != null && message.hasOwnProperty("elementId"))
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
-        if (message.color != null && message.hasOwnProperty("color"))
+        if (message.color != null && Object.hasOwnProperty.call(message, "color"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.color);
-        if (message.indexCount != null && message.hasOwnProperty("indexCount"))
+        if (message.indexCount != null && Object.hasOwnProperty.call(message, "indexCount"))
             writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.indexCount);
-        if (message.vertexCount != null && message.hasOwnProperty("vertexCount"))
+        if (message.vertexCount != null && Object.hasOwnProperty.call(message, "vertexCount"))
             writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.vertexCount);
-        if (message.meshData != null && message.hasOwnProperty("meshData"))
+        if (message.meshData != null && Object.hasOwnProperty.call(message, "meshData"))
             writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.meshData);
-        if (message.textureId != null && message.hasOwnProperty("textureId"))
+        if (message.textureId != null && Object.hasOwnProperty.call(message, "textureId"))
             writer.uint32(/* id 6, wireType 2 =*/50).string(message.textureId);
         return writer;
     };
@@ -1824,7 +1819,7 @@ $root.TextureRequest = (function() {
     TextureRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.textureId != null && message.hasOwnProperty("textureId"))
+        if (message.textureId != null && Object.hasOwnProperty.call(message, "textureId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.textureId);
         return writer;
     };
@@ -2020,9 +2015,9 @@ $root.TextureReply = (function() {
     TextureReply.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.textureId != null && message.hasOwnProperty("textureId"))
+        if (message.textureId != null && Object.hasOwnProperty.call(message, "textureId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.textureId);
-        if (message.textureData != null && message.hasOwnProperty("textureData"))
+        if (message.textureData != null && Object.hasOwnProperty.call(message, "textureData"))
             writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.textureData);
         return writer;
     };
@@ -2230,7 +2225,7 @@ $root.ElementTooltipRequest = (function() {
     ElementTooltipRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.elementId != null && message.hasOwnProperty("elementId"))
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
         return writer;
     };
@@ -2444,13 +2439,13 @@ $root.ElementTooltipReply = (function() {
     ElementTooltipReply.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.elementId != null && message.hasOwnProperty("elementId"))
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
-        if (message.classLabel != null && message.hasOwnProperty("classLabel"))
+        if (message.classLabel != null && Object.hasOwnProperty.call(message, "classLabel"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.classLabel);
-        if (message.categoryLabel != null && message.hasOwnProperty("categoryLabel"))
+        if (message.categoryLabel != null && Object.hasOwnProperty.call(message, "categoryLabel"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.categoryLabel);
-        if (message.modelLabel != null && message.hasOwnProperty("modelLabel"))
+        if (message.modelLabel != null && Object.hasOwnProperty.call(message, "modelLabel"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.modelLabel);
         return writer;
     };
@@ -2876,17 +2871,17 @@ $root.ProjectExtentsReply = (function() {
     ProjectExtentsReply.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.minX != null && message.hasOwnProperty("minX"))
+        if (message.minX != null && Object.hasOwnProperty.call(message, "minX"))
             writer.uint32(/* id 1, wireType 1 =*/9).double(message.minX);
-        if (message.minY != null && message.hasOwnProperty("minY"))
+        if (message.minY != null && Object.hasOwnProperty.call(message, "minY"))
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.minY);
-        if (message.minZ != null && message.hasOwnProperty("minZ"))
+        if (message.minZ != null && Object.hasOwnProperty.call(message, "minZ"))
             writer.uint32(/* id 3, wireType 1 =*/25).double(message.minZ);
-        if (message.maxX != null && message.hasOwnProperty("maxX"))
+        if (message.maxX != null && Object.hasOwnProperty.call(message, "maxX"))
             writer.uint32(/* id 4, wireType 1 =*/33).double(message.maxX);
-        if (message.maxY != null && message.hasOwnProperty("maxY"))
+        if (message.maxY != null && Object.hasOwnProperty.call(message, "maxY"))
             writer.uint32(/* id 5, wireType 1 =*/41).double(message.maxY);
-        if (message.maxZ != null && message.hasOwnProperty("maxZ"))
+        if (message.maxZ != null && Object.hasOwnProperty.call(message, "maxZ"))
             writer.uint32(/* id 6, wireType 1 =*/49).double(message.maxZ);
         return writer;
     };
@@ -3352,21 +3347,21 @@ $root.CameraViewsReply = (function() {
     CameraViewsReply.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.elementId != null && message.hasOwnProperty("elementId"))
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
-        if (message.displayLabel != null && message.hasOwnProperty("displayLabel"))
+        if (message.displayLabel != null && Object.hasOwnProperty.call(message, "displayLabel"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.displayLabel);
-        if (message.eyePointX != null && message.hasOwnProperty("eyePointX"))
+        if (message.eyePointX != null && Object.hasOwnProperty.call(message, "eyePointX"))
             writer.uint32(/* id 3, wireType 1 =*/25).double(message.eyePointX);
-        if (message.eyePointY != null && message.hasOwnProperty("eyePointY"))
+        if (message.eyePointY != null && Object.hasOwnProperty.call(message, "eyePointY"))
             writer.uint32(/* id 4, wireType 1 =*/33).double(message.eyePointY);
-        if (message.eyePointZ != null && message.hasOwnProperty("eyePointZ"))
+        if (message.eyePointZ != null && Object.hasOwnProperty.call(message, "eyePointZ"))
             writer.uint32(/* id 5, wireType 1 =*/41).double(message.eyePointZ);
-        if (message.yaw != null && message.hasOwnProperty("yaw"))
+        if (message.yaw != null && Object.hasOwnProperty.call(message, "yaw"))
             writer.uint32(/* id 6, wireType 1 =*/49).double(message.yaw);
-        if (message.pitch != null && message.hasOwnProperty("pitch"))
+        if (message.pitch != null && Object.hasOwnProperty.call(message, "pitch"))
             writer.uint32(/* id 7, wireType 1 =*/57).double(message.pitch);
-        if (message.roll != null && message.hasOwnProperty("roll"))
+        if (message.roll != null && Object.hasOwnProperty.call(message, "roll"))
             writer.uint32(/* id 8, wireType 1 =*/65).double(message.roll);
         return writer;
     };
