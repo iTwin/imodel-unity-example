@@ -11,7 +11,7 @@ development purposes.
 ### Prerequisites
 
 * Unity 2019.1 or later
-* Node 10
+* Node 12
 * Windows
 * MacOS and Linux should work but are untested. Developers on these platforms will need to add the appropriate
   version of the [protobuf-compiler](https://developers.google.com/protocol-buffers/docs/downloads)
@@ -90,19 +90,6 @@ Element properties (commonly referred to as "BIM data") are loaded on demand whe
 This example shows one possible pattern for integrating iModel.js with applications that
 aren't full-stack JavaScript/TypeScript. There are no special accomodations for this pattern in
 iModel.js, so feel free to choose an alternative or adapt this strategy as you see fit.
-
-### How Do I Use This Example With iModelHub?
-
-* Configure this example to use your registered client id
-* Edit .\node\src\configuration.ts
-* Set imjs_client_id and imjs_scope.
-* From the node subdirectory, run
-
-```sh
-npm run start-selector
-```
-
-* A dialog will appear for sign-in and selection of the iModel.
 
 ### How Do I Update the Protocol Buffer Schema?
 
