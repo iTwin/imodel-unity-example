@@ -2,13 +2,16 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { ExportGraphicsInfo, IModelHost, IModelDb, ECSqlStatement, Texture, ViewDefinition3d, GeometricElement, SnapshotDb } from "@bentley/imodeljs-backend";
-import { Id64Array, DbResult, Logger, LogLevel } from "@bentley/bentleyjs-core";
+import { DbResult, Id64Array, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { Angle } from "@bentley/geometry-core";
-import { IExportMeshesReply, IElementTooltipReply, ITextureReply, IProjectExtentsReply,
-  ICameraViewsReply, IReplyWrapper, ReplyWrapper, RequestWrapper } from "./IModelRpc_pb";
+import { ECSqlStatement, ExportGraphicsInfo, GeometricElement, IModelDb, IModelHost, SnapshotDb, Texture, ViewDefinition3d } from "@bentley/imodeljs-backend";
 import * as ws from "ws";
 import * as yargs from "yargs";
+import {
+  ICameraViewsReply, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply,
+  IReplyWrapper, ITextureReply,
+  ReplyWrapper, RequestWrapper
+} from "./IModelRpc_pb";
 
 let iModel: IModelDb;
 
@@ -183,7 +186,7 @@ function onSocketConnection(socket: ws) {
 async function startServer(iModelName: string) {
   await IModelHost.startup();
   Logger.initializeToConsole();
-  Logger.setLevelDefault(LogLevel.Info);
+  Logger.setLevelDefault(LogLevel.Warning);
   Logger.setLevel(LOG_CATEGORY, LogLevel.Trace);
 
   iModel = SnapshotDb.openFile(iModelName);
