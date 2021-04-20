@@ -2,14 +2,11 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { ExportGraphicsInfo, IModelHost, IModelDb, ECSqlStatement, Texture, ViewDefinition3d, GeometricElement } from "@bentley/imodeljs-backend";
+import { ExportGraphicsInfo, IModelHost, IModelDb, ECSqlStatement, Texture, ViewDefinition3d, GeometricElement, SnapshotDb } from "@bentley/imodeljs-backend";
 import { Id64Array, DbResult, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { Angle } from "@bentley/geometry-core";
 import { IExportMeshesReply, IElementTooltipReply, ITextureReply, IProjectExtentsReply,
   ICameraViewsReply, IReplyWrapper, ReplyWrapper, RequestWrapper } from "./IModelRpc_pb";
-import { IModelSelectorData, launchIModelSelector } from "@bentley/imodel-selector";
-import { AccessToken, AuthorizedClientRequestContext, Config } from "@bentley/imodeljs-clients";
-import setupEnv from "./configuration";
 import * as ws from "ws";
 import * as yargs from "yargs";
 
@@ -96,7 +93,7 @@ function handleTextureRequest(socket: ws, wrapper: RequestWrapper) {
 
   const textureReply: ITextureReply = {
     textureId: request.textureId,
-    textureData: Buffer.from(texture.data, "base64"),
+    textureData: texture.data,
   };
   socket.send(encodeReply(wrapper.requestId, { textureReply }));
 }
@@ -184,31 +181,13 @@ function onSocketConnection(socket: ws) {
 }
 
 async function startServer(iModelName: string) {
-  IModelHost.startup();
+  await IModelHost.startup();
   Logger.initializeToConsole();
-  Logger.setLevelDefault(LogLevel.Warning);
+  Logger.setLevelDefault(LogLevel.Info);
   Logger.setLevel(LOG_CATEGORY, LogLevel.Trace);
 
-  if (iModelName) {
-    iModel = IModelDb.openSnapshot(iModelName);
-    logInfo(`Opened ${iModelName} successfully.`);
-  } else {
-    const clientId = Config.App.get("imjs_client_id");
-    const scope = Config.App.get("imjs_scope");
-    const imodelSelectorData: IModelSelectorData | undefined = await launchIModelSelector({client_id: clientId, scope});
-    if (!imodelSelectorData) {
-      logError("Login failed");
-      return;
-    }
-    const accessToken: AccessToken | undefined = await imodelSelectorData.getAccessToken();
-    if (!accessToken) {
-      logError("AccessToken acquisition failed");
-      return;
-    }
-    const reqContext = new AuthorizedClientRequestContext(accessToken);
-    iModel = await IModelDb.open(reqContext, imodelSelectorData.contextId!, imodelSelectorData.imodelId!);
-    logInfo(`Opened iModel successfully.`);
-  }
+  iModel = SnapshotDb.openFile(iModelName);
+  logInfo(`Opened ${iModelName} successfully.`);
 
   const serverPort = 3005; // Must match EntryPoint.cs
   const server = new ws.Server({ port: serverPort });
@@ -221,8 +200,6 @@ yargs.usage("Launch an iModel.js server to provide data over a web socket.");
 yargs.command("[input]", "The input BIM");
 interface UnityBackendArgs { input: string; }
 const args = yargs.parse() as yargs.Arguments<UnityBackendArgs>;
-
-setupEnv();
 
 startServer(args.input)
   .catch((reason) => { process.stdout.write(reason + "\n"); });
