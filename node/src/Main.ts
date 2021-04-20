@@ -10,7 +10,7 @@ import * as yargs from "yargs";
 import {
   ICameraViewsReply, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply,
   IReplyWrapper, ITextureReply,
-  ReplyWrapper, RequestWrapper
+  ReplyWrapper, RequestWrapper,
 } from "./IModelRpc_pb";
 
 let iModel: IModelDb;
