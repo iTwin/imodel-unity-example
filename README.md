@@ -103,6 +103,15 @@ npm run proto-build
 
 * The protobuf-generated code in node and unity subdirectories will be updated.
 
+### How Do I Use iModels From iModelHub?
+
+Edit `IMODELHUB_REQUEST_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDownload.ts) to replace contextId
+and iModelId with the appropriate values for your iModel. Then run:
+
+```sh
+node lib\\Main.js
+```
+
 ### What About AR, VR, Mobile and Other Platforms?
 
 The example is targeted at producing a desktop executable because it is the most generic and universally
