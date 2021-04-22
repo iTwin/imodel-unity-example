@@ -7,6 +7,7 @@ import { Angle } from "@bentley/geometry-core";
 import { ECSqlStatement, ExportGraphicsInfo, GeometricElement, IModelDb, IModelHost, SnapshotDb, Texture, ViewDefinition3d } from "@bentley/imodeljs-backend";
 import * as ws from "ws";
 import * as yargs from "yargs";
+import { openIModelFromIModelHub } from "./IModelHubDownload";
 import {
   ICameraViewsReply, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply,
   IReplyWrapper, ITextureReply,
@@ -17,10 +18,10 @@ let iModel: IModelDb;
 
 const LOG_CATEGORY = "imodel-unity-example";
 
-const logTrace = (msg: string) => Logger.logTrace(LOG_CATEGORY, msg);
-const logInfo = (msg: string) => Logger.logInfo(LOG_CATEGORY, msg);
-const logError = (msg: string) => Logger.logError(LOG_CATEGORY, msg);
-const logErrorObject = (error: Error) => logError(`${error.message}\n${error.stack}`);
+export const logTrace = (msg: string) => Logger.logTrace(LOG_CATEGORY, msg);
+export const logInfo = (msg: string) => Logger.logInfo(LOG_CATEGORY, msg);
+export const logError = (msg: string) => Logger.logError(LOG_CATEGORY, msg);
+export const logErrorObject = (error: Error) => logError(`${error.message}\n${error.stack}`);
 
 function encodeReply(requestId: number, reply: IReplyWrapper): Uint8Array {
   reply.requestId = requestId;
@@ -183,14 +184,20 @@ function onSocketConnection(socket: ws) {
   socket.on("error", logErrorObject);
 }
 
-async function startServer(iModelName: string) {
+async function startServer(snapshotFile?: string) {
   await IModelHost.startup();
   Logger.initializeToConsole();
   Logger.setLevelDefault(LogLevel.Warning);
   Logger.setLevel(LOG_CATEGORY, LogLevel.Trace);
 
-  iModel = SnapshotDb.openFile(iModelName);
-  logInfo(`Opened ${iModelName} successfully.`);
+  if (!snapshotFile) {
+    logInfo("No snapshot specified, attempting to open from iModelHub");
+    iModel = await openIModelFromIModelHub();
+  } else {
+    logInfo(`Attempting to open ${snapshotFile}`);
+    iModel = SnapshotDb.openFile(snapshotFile);
+    logInfo(`${snapshotFile} opened successfully`);
+  }
 
   const serverPort = 3005; // Must match EntryPoint.cs
   const server = new ws.Server({ port: serverPort });
@@ -199,10 +206,16 @@ async function startServer(iModelName: string) {
   server.on("connection", onSocketConnection);
 }
 
-yargs.usage("Launch an iModel.js server to provide data over a web socket.");
-yargs.command("[input]", "The input BIM");
-interface UnityBackendArgs { input: string; }
-const args = yargs.parse() as yargs.Arguments<UnityBackendArgs>;
+interface UnityBackendArgs {
+  snapshotFile?: string;
+}
 
-startServer(args.input)
-  .catch((reason) => { process.stdout.write(reason + "\n"); });
+const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
+  .usage("Usage: $0 --snapshotFile [Snapshot iModel file]")
+  .string("snapshotFile")
+  .alias("snapshotFile", "s")
+  .describe("snapshotFile", "Path to a Snapshot iModel file (.bim)")
+  .argv;
+
+startServer(unityBackendArgs.snapshotFile)
+  .catch((reason) => { process.stdout.write(`${reason}\n`); });
