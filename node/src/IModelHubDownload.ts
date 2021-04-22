@@ -64,7 +64,7 @@ function getBriefcaseFromCache(): LocalBriefcaseProps | undefined {
   return cachedBriefcases[0];
 }
 
-function downloadBriefcase(authContext: AuthorizedBackendRequestContext): Promise<LocalBriefcaseProps> {
+async function downloadBriefcase(authContext: AuthorizedBackendRequestContext): Promise<LocalBriefcaseProps> {
   logInfo(`Downloading new briefcase for contextId ${IMODELHUB_REQUEST_PROPS.contextId} iModelId ${IMODELHUB_REQUEST_PROPS.iModelId}`);
 
   let nextProgressUpdate = new Date().getTime() + 2000; // too spammy without some throttling
@@ -72,7 +72,7 @@ function downloadBriefcase(authContext: AuthorizedBackendRequestContext): Promis
     if (new Date().getTime() > nextProgressUpdate) {
       if (loadedBytes === totalBytes)
         logInfo(`Download complete, applying changesets`);
-      else 
+      else
         logInfo(`Downloaded ${(loadedBytes / (1024 * 1024)).toFixed(2)}MB of ${(totalBytes / (1024 * 1024)).toFixed(2)}MB`);
       nextProgressUpdate = new Date().getTime() + 2000;
     }

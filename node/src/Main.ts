@@ -193,8 +193,7 @@ async function startServer(snapshotFile?: string) {
   if (!snapshotFile) {
     logInfo("No snapshot specified, attempting to open from iModelHub");
     iModel = await openIModelFromIModelHub();
-  }
-  else {
+  } else {
     logInfo(`Attempting to open ${snapshotFile}`);
     iModel = SnapshotDb.openFile(snapshotFile);
     logInfo(`${snapshotFile} opened successfully`);
@@ -219,4 +218,4 @@ const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
   .argv;
 
 startServer(unityBackendArgs.snapshotFile)
-  .catch((reason) => { process.stdout.write(`${reason}\n`) });
+  .catch((reason) => { process.stdout.write(`${reason}\n`); });
