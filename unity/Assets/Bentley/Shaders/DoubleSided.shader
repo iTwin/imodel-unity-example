@@ -19,7 +19,7 @@ Shader "Bentley/Double Sided Opaque"
         Cull Off
 
         CGPROGRAM
-        #pragma surface surf Standard fullforwardshadows
+        #pragma surface surf Standard fullforwardshadows addshadow
 
         #pragma target 3.0
 

@@ -109,7 +109,7 @@ Edit `IMODELHUB_REQUEST_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDow
 and iModelId with the appropriate values for your iModel. Then run:
 
 ```sh
-node lib\\Main.js
+node lib\Main.js
 ```
 
 ### What About AR, VR, Mobile and Other Platforms?
@@ -149,8 +149,8 @@ See [chordTol in ExportGraphicsProps](https://imodeljs.github.io/iModelJs-docs-o
 
 ### How Can I Do XYZ With This Example?
 
-Please feel free to open an issue or contact matt.gooding@bentley.com directly with any questions.
-We are actively supporting interested users for this technology.
+Please ask any questions on https://github.com/imodeljs/imodeljs/discussions.
+We are actively supporting interested users of this technology.
 
 ## Contributing
 

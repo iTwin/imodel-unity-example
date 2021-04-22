@@ -2,220 +2,44 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { DbResult, Id64Array, Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { Angle } from "@bentley/geometry-core";
-import { ECSqlStatement, ExportGraphicsInfo, GeometricElement, IModelDb, IModelHost, SnapshotDb, Texture, ViewDefinition3d } from "@bentley/imodeljs-backend";
-import * as ws from "ws";
+import { Logger, LogLevel } from "@bentley/bentleyjs-core";
+import { IModelDb, IModelHost, SnapshotDb } from "@bentley/imodeljs-backend";
 import * as yargs from "yargs";
 import { openIModelFromIModelHub } from "./IModelHubDownload";
-import {
-  ICameraViewsReply, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply,
-  IReplyWrapper, ITextureReply,
-  ReplyWrapper, RequestWrapper,
-} from "./IModelRpc_pb";
+import { startProtobufRpcServer } from "./ProtobufRpcServer";
 
-let iModel: IModelDb;
-
-const LOG_CATEGORY = "imodel-unity-example";
-
-export const logTrace = (msg: string) => Logger.logTrace(LOG_CATEGORY, msg);
-export const logInfo = (msg: string) => Logger.logInfo(LOG_CATEGORY, msg);
-export const logError = (msg: string) => Logger.logError(LOG_CATEGORY, msg);
-export const logErrorObject = (error: Error) => logError(`${error.message}\n${error.stack}`);
-
-function encodeReply(requestId: number, reply: IReplyWrapper): Uint8Array {
-  reply.requestId = requestId;
-  return ReplyWrapper.encode(ReplyWrapper.create(reply)).finish();
-}
-
-function createMeshReply(info: ExportGraphicsInfo, requestId: number): Uint8Array {
-  const indices = info.mesh.indices;
-  const points = info.mesh.points;
-  const normals = info.mesh.normals;
-  const params = info.mesh.params;
-  const byteCount = indices.byteLength + points.byteLength + normals.byteLength + params.byteLength;
-  const meshData: Buffer = Buffer.allocUnsafe(byteCount);
-
-  let offset = 0;
-  Buffer.from(indices.buffer).copy(meshData, offset); offset += indices.byteLength;
-  Buffer.from(points.buffer).copy(meshData, offset); offset += points.byteLength;
-  Buffer.from(normals.buffer).copy(meshData, offset); offset += normals.byteLength;
-  Buffer.from(params.buffer).copy(meshData, offset);
-
-  const exportMeshesReply: IExportMeshesReply = {
-    elementId: info.elementId,
-    color: info.color,
-    indexCount: indices.length,
-    vertexCount: points.length / 3,
-    meshData,
-  };
-  if (info.textureId) exportMeshesReply.textureId = info.textureId;
-
-  return encodeReply(requestId, { exportMeshesReply, requestHasMoreReplies: true });
-}
-
-function handleExportMeshesRequest(socket: ws, wrapper: RequestWrapper) {
-  const request = wrapper.exportMeshesRequest!;
-  if (!request.elementIds) { logError("ExportMeshesRequest missing elementIds"); return; }
-  if (!request.chordTol) { logError("ExportMeshesRequest missing chordTol"); return; }
-
-  const cachedGraphics: ExportGraphicsInfo[] = [];
-  iModel.exportGraphics({
-    onGraphics: (info) => cachedGraphics.push(info),
-    elementIdArray: request.elementIds,
-    chordTol: request.chordTol,
-    angleTol: Angle.degreesToRadians(45),
-  });
-
-  for (const info of cachedGraphics)
-    socket.send(createMeshReply(info, wrapper.requestId));
-
-  // Empty reply finishes stream
-  socket.send(encodeReply(wrapper.requestId, { exportMeshesReply: {} }));
-}
-
-function handleTooltipRequest(socket: ws, wrapper: RequestWrapper) {
-  const request = wrapper.elementTooltipRequest!;
-  if (!request.elementId) { logError("ElementTooltipRequest missing elementId"); return; }
-  const element = iModel.elements.getElement<GeometricElement>(request.elementId);
-  if (!element) { logError(`Could not load element ${request.elementId}`); return; }
-
-  const elementTooltipReply: IElementTooltipReply = {
-    elementId: request.elementId,
-    classLabel: element.className,
-    categoryLabel: iModel.elements.getElement(element.category).getDisplayLabel(),
-    modelLabel: iModel.elements.getElement(element.model).getDisplayLabel(),
-  };
-  socket.send(encodeReply(wrapper.requestId, { elementTooltipReply }));
-}
-
-function handleTextureRequest(socket: ws, wrapper: RequestWrapper) {
-  const request = wrapper.textureRequest!;
-  if (!request.textureId) { logError("TextureRequest missing textureId"); return; }
-  const texture = iModel.elements.getElement(request.textureId) as Texture;
-  if (!texture) { logError(`Could not load texture ${request.textureId}`); return; }
-
-  const textureReply: ITextureReply = {
-    textureId: request.textureId,
-    textureData: texture.data,
-  };
-  socket.send(encodeReply(wrapper.requestId, { textureReply }));
-}
-
-function handleProjectExtentsRequest(socket: ws, wrapper: RequestWrapper) {
-  const extents = iModel.projectExtents;
-  const projectExtentsReply: IProjectExtentsReply = {
-    minX: extents.low.x,  minY: extents.low.y,  minZ: extents.low.z,
-    maxX: extents.high.x, maxY: extents.high.y, maxZ: extents.high.z,
-  };
-  socket.send(encodeReply(wrapper.requestId, { projectExtentsReply }));
-}
-
-function handleSelectElementIdsRequest(socket: ws, wrapper: RequestWrapper) {
-  const request = wrapper.selectElementIdsRequest!;
-  if (!request.selectFilter) { logError("SelectElementIdsRequest missing selectFilter"); return; }
-
-  const sql = "SELECT ECInstanceId " + request.selectFilter;
-  const elementIds: Id64Array = [];
-  iModel.withPreparedStatement(sql, (stmt: ECSqlStatement) => {
-    while (stmt.step() === DbResult.BE_SQLITE_ROW)
-      elementIds.push(stmt.getValue(0).getId());
-  });
-
-  logTrace(`Selected ${elementIds.length} elements`);
-  socket.send(encodeReply(wrapper.requestId, { selectElementIdsReply: { elementIds } }));
-}
-
-function createCameraViewsReply(viewElement: ViewDefinition3d, requestId: number): Uint8Array {
-  const eyePoint = viewElement.camera.eye;
-  const cameraViewsReply: ICameraViewsReply = {
-    displayLabel: viewElement.getDisplayLabel(),
-    yaw: viewElement.angles.yaw.degrees,
-    pitch: viewElement.angles.pitch.degrees,
-    roll: viewElement.angles.roll.degrees,
-    eyePointX: eyePoint.x,
-    eyePointY: eyePoint.y,
-    eyePointZ: eyePoint.z,
-  };
-
-  return encodeReply(requestId, { cameraViewsReply, requestHasMoreReplies: true });
-}
-
-function handleCameraViewsRequest(socket: ws, wrapper: RequestWrapper) {
-  const sql = "SELECT ECInstanceId FROM bis.ViewDefinition3d";
-  iModel.withPreparedStatement(sql, (stmt: ECSqlStatement) => {
-    while (stmt.step() === DbResult.BE_SQLITE_ROW) {
-      const id = stmt.getValue(0).getId();
-      const viewElement = iModel.elements.getElement(id) as ViewDefinition3d;
-      if (viewElement && viewElement.cameraOn)
-        socket.send(createCameraViewsReply(viewElement, wrapper.requestId));
-    }
-  });
-
-  // Empty reply finishes stream
-  socket.send(encodeReply(wrapper.requestId, { cameraViewsReply: {} }));
-}
-
-type SocketRequestHandler = (socket: ws, wrapper: RequestWrapper) => void;
-function getSocketRequestHandler(wrapper: RequestWrapper): SocketRequestHandler | undefined {
-  switch (wrapper.msg) {
-    case "selectElementIdsRequest": return handleSelectElementIdsRequest;
-    case "exportMeshesRequest": return handleExportMeshesRequest;
-    case "textureRequest": return handleTextureRequest;
-    case "elementTooltipRequest": return handleTooltipRequest;
-    case "projectExtentsRequest": return handleProjectExtentsRequest;
-    case "cameraViewsRequest": return handleCameraViewsRequest;
-    default: logError(`Unhandled request type: ${wrapper.msg}`); return undefined;
-  }
-}
-
-const onSocketMessage = (socket: ws) => (data: ws.Data) => {
-  if (!Buffer.isBuffer(data)) { logError("Non-buffer data in onSocketMessage"); return; }
-  const wrapper = RequestWrapper.decode(data);
-  logTrace(`${JSON.stringify(wrapper)}`);
-  const handler = getSocketRequestHandler(wrapper);
-  if (handler) handler(socket, wrapper);
-};
-
-function onSocketConnection(socket: ws) {
-  logInfo("User connected");
-  socket.on("message", onSocketMessage(socket));
-  socket.on("close", (code: number, reason: string) => logInfo(`User disconnected, Code ${code} ${reason}`));
-  socket.on("error", logErrorObject);
-}
-
-async function startServer(snapshotFile?: string) {
-  await IModelHost.startup();
-  Logger.initializeToConsole();
-  Logger.setLevelDefault(LogLevel.Warning);
-  Logger.setLevel(LOG_CATEGORY, LogLevel.Trace);
-
-  if (!snapshotFile) {
-    logInfo("No snapshot specified, attempting to open from iModelHub");
-    iModel = await openIModelFromIModelHub();
-  } else {
-    logInfo(`Attempting to open ${snapshotFile}`);
-    iModel = SnapshotDb.openFile(snapshotFile);
-    logInfo(`${snapshotFile} opened successfully`);
-  }
-
-  const serverPort = 3005; // Must match EntryPoint.cs
-  const server = new ws.Server({ port: serverPort });
-  server.on("listening", () => logInfo(`Listening on ws://localhost:${serverPort}`));
-  server.on("error", logErrorObject);
-  server.on("connection", onSocketConnection);
-}
+export const APP_LOGGER_CATEGORY = "imodel-unity-example";
 
 interface UnityBackendArgs {
   snapshotFile?: string;
 }
 
 const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
-  .usage("Usage: $0 --snapshotFile [Snapshot iModel file]")
+  .usage("Usage: $0 --snapshotFile [Snapshot iModel file]\nIf snapshotFile is not specified, attempts to use iModel specified in IModelHubDownload.ts.")
   .string("snapshotFile")
   .alias("snapshotFile", "s")
   .describe("snapshotFile", "Path to a Snapshot iModel file (.bim)")
   .argv;
 
-startServer(unityBackendArgs.snapshotFile)
-  .catch((reason) => { process.stdout.write(`${reason}\n`); });
+(async () => {
+  await IModelHost.startup();
+  Logger.initializeToConsole();
+  Logger.setLevelDefault(LogLevel.Warning);
+  Logger.setLevel(APP_LOGGER_CATEGORY, LogLevel.Trace);
+
+  let iModel: IModelDb;
+
+  if (!unityBackendArgs.snapshotFile) {
+    Logger.logInfo(APP_LOGGER_CATEGORY, "No snapshot specified, attempting to open from iModelHub");
+    iModel = await openIModelFromIModelHub();
+  } else {
+    Logger.logInfo(APP_LOGGER_CATEGORY, `Attempting to open ${unityBackendArgs.snapshotFile}`);
+    iModel = SnapshotDb.openFile(unityBackendArgs.snapshotFile);
+    Logger.logInfo(APP_LOGGER_CATEGORY, `${unityBackendArgs.snapshotFile} opened successfully`);
+  }
+
+  startProtobufRpcServer(iModel);
+
+})().catch((reason) => {
+  process.stdout.write(`${reason}\n`);
+});
