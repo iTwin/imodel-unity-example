@@ -16,7 +16,7 @@ import {
 type ProtobufRpcRequestHandler = (socket: ws, iModel: IModelDb, wrapper: RequestWrapper) => void;
 
 export function startProtobufRpcServer(iModel: IModelDb) {
-  const port = 3005; // Must match EntryPoint.cs
+  const port = 3005; // Must match MainLoop.cs
   const webSocketServer = new ws.Server({ port });
   webSocketServer.on("listening", () => Logger.logInfo(APP_LOGGER_CATEGORY, `Listening on ws://localhost:${port}`));
   webSocketServer.on("error", (error) => Logger.logError(APP_LOGGER_CATEGORY, `${error.message}\n${error.stack}`));

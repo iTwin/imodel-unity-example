@@ -29,7 +29,7 @@ namespace Bentley
         {
             Physics.queriesHitBackfaces = true;
 
-            // Address must match Main.ts
+            // Address must match ProtobufRpcServer.ts
             _backend = new BackendRouter("ws://localhost:3005", () =>
             {
                 _isBackendSetup = true;
