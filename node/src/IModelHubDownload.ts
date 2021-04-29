@@ -79,5 +79,5 @@ async function downloadBriefcase(authContext: AuthorizedBackendRequestContext): 
     return 0;
   };
 
-  return BriefcaseManager.downloadBriefcase(authContext, { ...IMODELHUB_REQUEST_PROPS, onProgress });
+  return BriefcaseManager.downloadBriefcase(authContext, { ...IMODELHUB_REQUEST_PROPS, onProgress, briefcaseId: 0 });
 }
