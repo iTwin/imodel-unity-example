@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node lib/Main.js --snapshotFile=demo.bim",
+    "start-from-hub": "node lib/Main.js",
     "build": "cpx src/IModelRpc_pb.js lib/ && npm run build-code 1>&2",
     "lint": "tslint -p . 1>&2",
     "build-code": "tsc 1>&2",
