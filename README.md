@@ -109,7 +109,7 @@ Edit `IMODELHUB_REQUEST_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDow
 and iModelId with the appropriate values for your iModel. Then run:
 
 ```sh
-node lib\Main.js
+npm run start-from-hub
 ```
 
 ### What About AR, VR, Mobile and Other Platforms?
