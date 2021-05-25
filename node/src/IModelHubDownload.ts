@@ -5,7 +5,7 @@
 
 import { Logger } from "@bentley/bentleyjs-core";
 import { ElectronAuthorizationBackend } from "@bentley/electron-manager/lib/ElectronBackend";
-import { AuthorizedBackendRequestContext, BackendRequestContext, BriefcaseDb, BriefcaseManager, NativeHost } from "@bentley/imodeljs-backend";
+import { AuthorizedBackendRequestContext, BriefcaseDb, BriefcaseManager } from "@bentley/imodeljs-backend";
 import { LocalBriefcaseProps } from "@bentley/imodeljs-common";
 import { AccessToken } from "@bentley/itwin-client";
 import { APP_LOGGER_CATEGORY } from "./Main";
