@@ -33,23 +33,13 @@ export async function openIModelFromIModelHub(): Promise<BriefcaseDb> {
 }
 
 async function signInWithDesktopClient(): Promise<AccessToken> {
-  const requestContext = new BackendRequestContext();
   const client = new ElectronAuthorizationBackend();
-  await client.initialize(requestContext, {
+  await client.initialize({
     clientId: "imodeljs-electron-samples",
     redirectUri: "http://localhost:3000/signin-callback",
     scope: "openid imodelhub context-registry-service:read-only urlps-third-party offline_access",
   });
-
-  return new Promise<AccessToken>((resolve, reject) => {
-    NativeHost.onUserStateChanged.addListener((token) => {
-      if (token !== undefined)
-        resolve(token);
-      else
-        reject(new Error("Failed to sign in"));
-    });
-    client.signIn().catch((err) => reject(err));
-  });
+  return client.signInComplete();
 }
 
 function getBriefcaseFromCache(): LocalBriefcaseProps | undefined {
