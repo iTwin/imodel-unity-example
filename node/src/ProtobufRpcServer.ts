@@ -67,7 +67,7 @@ function handleSelectElementIdsRequest(socket: ws, iModel: IModelDb, wrapper: Re
   const request = wrapper.selectElementIdsRequest;
   assert(!!request && !!request.selectFilter);
 
-  const sql = "SELECT ECInstanceId " + request.selectFilter;
+  const sql = `SELECT ECInstanceId ${request.selectFilter}`;
   const elementIds: Id64Array = [];
   iModel.withPreparedStatement(sql, (stmt: ECSqlStatement) => {
     while (stmt.step() === DbResult.BE_SQLITE_ROW)
