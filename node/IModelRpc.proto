@@ -14,6 +14,7 @@ message RequestWrapper {
     ElementTooltipRequest elementTooltipRequest = 5;
     ProjectExtentsRequest projectExtentsRequest = 6;
     CameraViewsRequest cameraViewsRequest = 7;
+    ElementPropertiesRequest elementPropertiesRequest = 8;
   }
 }
 
@@ -27,6 +28,7 @@ message ReplyWrapper {
     ElementTooltipReply elementTooltipReply = 6;
     ProjectExtentsReply projectExtentsReply = 7;
     CameraViewsReply cameraViewsReply = 8;
+    ElementPropertiesReply elementPropertiesReply = 9;
   }
 }
 
@@ -98,4 +100,18 @@ message CameraViewsReply {
   double yaw = 6;
   double pitch = 7;
   double roll = 8;
+}
+
+message ElementPropertiesRequest {
+  string elementId = 1;
+}
+
+message ElementPropertiesReply {
+  ElementPropertiesReplyEntry root = 1;
+}
+
+message ElementPropertiesReplyEntry {
+  string label = 1;
+  string value = 2;
+  repeated ElementPropertiesReplyEntry children = 3;
 }

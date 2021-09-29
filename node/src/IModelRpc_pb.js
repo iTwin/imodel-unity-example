@@ -22,6 +22,7 @@ $root.RequestWrapper = (function() {
      * @property {IElementTooltipRequest|null} [elementTooltipRequest] RequestWrapper elementTooltipRequest
      * @property {IProjectExtentsRequest|null} [projectExtentsRequest] RequestWrapper projectExtentsRequest
      * @property {ICameraViewsRequest|null} [cameraViewsRequest] RequestWrapper cameraViewsRequest
+     * @property {IElementPropertiesRequest|null} [elementPropertiesRequest] RequestWrapper elementPropertiesRequest
      */
 
     /**
@@ -95,17 +96,25 @@ $root.RequestWrapper = (function() {
      */
     RequestWrapper.prototype.cameraViewsRequest = null;
 
+    /**
+     * RequestWrapper elementPropertiesRequest.
+     * @member {IElementPropertiesRequest|null|undefined} elementPropertiesRequest
+     * @memberof RequestWrapper
+     * @instance
+     */
+    RequestWrapper.prototype.elementPropertiesRequest = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * RequestWrapper msg.
-     * @member {"selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|undefined} msg
+     * @member {"selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest"|undefined} msg
      * @memberof RequestWrapper
      * @instance
      */
     Object.defineProperty(RequestWrapper.prototype, "msg", {
-        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsRequest", "exportMeshesRequest", "textureRequest", "elementTooltipRequest", "projectExtentsRequest", "cameraViewsRequest"]),
+        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsRequest", "exportMeshesRequest", "textureRequest", "elementTooltipRequest", "projectExtentsRequest", "cameraViewsRequest", "elementPropertiesRequest"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -147,6 +156,8 @@ $root.RequestWrapper = (function() {
             $root.ProjectExtentsRequest.encode(message.projectExtentsRequest, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.cameraViewsRequest != null && Object.hasOwnProperty.call(message, "cameraViewsRequest"))
             $root.CameraViewsRequest.encode(message.cameraViewsRequest, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+        if (message.elementPropertiesRequest != null && Object.hasOwnProperty.call(message, "elementPropertiesRequest"))
+            $root.ElementPropertiesRequest.encode(message.elementPropertiesRequest, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         return writer;
     };
 
@@ -201,6 +212,9 @@ $root.RequestWrapper = (function() {
                 break;
             case 7:
                 message.cameraViewsRequest = $root.CameraViewsRequest.decode(reader, reader.uint32());
+                break;
+            case 8:
+                message.elementPropertiesRequest = $root.ElementPropertiesRequest.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -299,6 +313,16 @@ $root.RequestWrapper = (function() {
                     return "cameraViewsRequest." + error;
             }
         }
+        if (message.elementPropertiesRequest != null && message.hasOwnProperty("elementPropertiesRequest")) {
+            if (properties.msg === 1)
+                return "msg: multiple values";
+            properties.msg = 1;
+            {
+                var error = $root.ElementPropertiesRequest.verify(message.elementPropertiesRequest);
+                if (error)
+                    return "elementPropertiesRequest." + error;
+            }
+        }
         return null;
     };
 
@@ -345,6 +369,11 @@ $root.RequestWrapper = (function() {
             if (typeof object.cameraViewsRequest !== "object")
                 throw TypeError(".RequestWrapper.cameraViewsRequest: object expected");
             message.cameraViewsRequest = $root.CameraViewsRequest.fromObject(object.cameraViewsRequest);
+        }
+        if (object.elementPropertiesRequest != null) {
+            if (typeof object.elementPropertiesRequest !== "object")
+                throw TypeError(".RequestWrapper.elementPropertiesRequest: object expected");
+            message.elementPropertiesRequest = $root.ElementPropertiesRequest.fromObject(object.elementPropertiesRequest);
         }
         return message;
     };
@@ -396,6 +425,11 @@ $root.RequestWrapper = (function() {
             if (options.oneofs)
                 object.msg = "cameraViewsRequest";
         }
+        if (message.elementPropertiesRequest != null && message.hasOwnProperty("elementPropertiesRequest")) {
+            object.elementPropertiesRequest = $root.ElementPropertiesRequest.toObject(message.elementPropertiesRequest, options);
+            if (options.oneofs)
+                object.msg = "elementPropertiesRequest";
+        }
         return object;
     };
 
@@ -427,6 +461,7 @@ $root.ReplyWrapper = (function() {
      * @property {IElementTooltipReply|null} [elementTooltipReply] ReplyWrapper elementTooltipReply
      * @property {IProjectExtentsReply|null} [projectExtentsReply] ReplyWrapper projectExtentsReply
      * @property {ICameraViewsReply|null} [cameraViewsReply] ReplyWrapper cameraViewsReply
+     * @property {IElementPropertiesReply|null} [elementPropertiesReply] ReplyWrapper elementPropertiesReply
      */
 
     /**
@@ -508,17 +543,25 @@ $root.ReplyWrapper = (function() {
      */
     ReplyWrapper.prototype.cameraViewsReply = null;
 
+    /**
+     * ReplyWrapper elementPropertiesReply.
+     * @member {IElementPropertiesReply|null|undefined} elementPropertiesReply
+     * @memberof ReplyWrapper
+     * @instance
+     */
+    ReplyWrapper.prototype.elementPropertiesReply = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ReplyWrapper msg.
-     * @member {"selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|undefined} msg
+     * @member {"selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply"|undefined} msg
      * @memberof ReplyWrapper
      * @instance
      */
     Object.defineProperty(ReplyWrapper.prototype, "msg", {
-        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsReply", "exportMeshesReply", "textureReply", "elementTooltipReply", "projectExtentsReply", "cameraViewsReply"]),
+        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsReply", "exportMeshesReply", "textureReply", "elementTooltipReply", "projectExtentsReply", "cameraViewsReply", "elementPropertiesReply"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -562,6 +605,8 @@ $root.ReplyWrapper = (function() {
             $root.ProjectExtentsReply.encode(message.projectExtentsReply, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.cameraViewsReply != null && Object.hasOwnProperty.call(message, "cameraViewsReply"))
             $root.CameraViewsReply.encode(message.cameraViewsReply, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.elementPropertiesReply != null && Object.hasOwnProperty.call(message, "elementPropertiesReply"))
+            $root.ElementPropertiesReply.encode(message.elementPropertiesReply, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         return writer;
     };
 
@@ -619,6 +664,9 @@ $root.ReplyWrapper = (function() {
                 break;
             case 8:
                 message.cameraViewsReply = $root.CameraViewsReply.decode(reader, reader.uint32());
+                break;
+            case 9:
+                message.elementPropertiesReply = $root.ElementPropertiesReply.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -720,6 +768,16 @@ $root.ReplyWrapper = (function() {
                     return "cameraViewsReply." + error;
             }
         }
+        if (message.elementPropertiesReply != null && message.hasOwnProperty("elementPropertiesReply")) {
+            if (properties.msg === 1)
+                return "msg: multiple values";
+            properties.msg = 1;
+            {
+                var error = $root.ElementPropertiesReply.verify(message.elementPropertiesReply);
+                if (error)
+                    return "elementPropertiesReply." + error;
+            }
+        }
         return null;
     };
 
@@ -768,6 +826,11 @@ $root.ReplyWrapper = (function() {
             if (typeof object.cameraViewsReply !== "object")
                 throw TypeError(".ReplyWrapper.cameraViewsReply: object expected");
             message.cameraViewsReply = $root.CameraViewsReply.fromObject(object.cameraViewsReply);
+        }
+        if (object.elementPropertiesReply != null) {
+            if (typeof object.elementPropertiesReply !== "object")
+                throw TypeError(".ReplyWrapper.elementPropertiesReply: object expected");
+            message.elementPropertiesReply = $root.ElementPropertiesReply.fromObject(object.elementPropertiesReply);
         }
         return message;
     };
@@ -822,6 +885,11 @@ $root.ReplyWrapper = (function() {
             object.cameraViewsReply = $root.CameraViewsReply.toObject(message.cameraViewsReply, options);
             if (options.oneofs)
                 object.msg = "cameraViewsReply";
+        }
+        if (message.elementPropertiesReply != null && message.hasOwnProperty("elementPropertiesReply")) {
+            object.elementPropertiesReply = $root.ElementPropertiesReply.toObject(message.elementPropertiesReply, options);
+            if (options.oneofs)
+                object.msg = "elementPropertiesReply";
         }
         return object;
     };
@@ -3568,6 +3636,639 @@ $root.CameraViewsReply = (function() {
     };
 
     return CameraViewsReply;
+})();
+
+$root.ElementPropertiesRequest = (function() {
+
+    /**
+     * Properties of an ElementPropertiesRequest.
+     * @exports IElementPropertiesRequest
+     * @interface IElementPropertiesRequest
+     * @property {string|null} [elementId] ElementPropertiesRequest elementId
+     */
+
+    /**
+     * Constructs a new ElementPropertiesRequest.
+     * @exports ElementPropertiesRequest
+     * @classdesc Represents an ElementPropertiesRequest.
+     * @implements IElementPropertiesRequest
+     * @constructor
+     * @param {IElementPropertiesRequest=} [properties] Properties to set
+     */
+    function ElementPropertiesRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementPropertiesRequest elementId.
+     * @member {string} elementId
+     * @memberof ElementPropertiesRequest
+     * @instance
+     */
+    ElementPropertiesRequest.prototype.elementId = "";
+
+    /**
+     * Creates a new ElementPropertiesRequest instance using the specified properties.
+     * @function create
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {IElementPropertiesRequest=} [properties] Properties to set
+     * @returns {ElementPropertiesRequest} ElementPropertiesRequest instance
+     */
+    ElementPropertiesRequest.create = function create(properties) {
+        return new ElementPropertiesRequest(properties);
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesRequest message. Does not implicitly {@link ElementPropertiesRequest.verify|verify} messages.
+     * @function encode
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {IElementPropertiesRequest} message ElementPropertiesRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesRequest message, length delimited. Does not implicitly {@link ElementPropertiesRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {IElementPropertiesRequest} message ElementPropertiesRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementPropertiesRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementPropertiesRequest} ElementPropertiesRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementPropertiesRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.elementId = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementPropertiesRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementPropertiesRequest} ElementPropertiesRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementPropertiesRequest message.
+     * @function verify
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementPropertiesRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.elementId != null && message.hasOwnProperty("elementId"))
+            if (!$util.isString(message.elementId))
+                return "elementId: string expected";
+        return null;
+    };
+
+    /**
+     * Creates an ElementPropertiesRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementPropertiesRequest} ElementPropertiesRequest
+     */
+    ElementPropertiesRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementPropertiesRequest)
+            return object;
+        var message = new $root.ElementPropertiesRequest();
+        if (object.elementId != null)
+            message.elementId = String(object.elementId);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementPropertiesRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementPropertiesRequest
+     * @static
+     * @param {ElementPropertiesRequest} message ElementPropertiesRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementPropertiesRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.elementId = "";
+        if (message.elementId != null && message.hasOwnProperty("elementId"))
+            object.elementId = message.elementId;
+        return object;
+    };
+
+    /**
+     * Converts this ElementPropertiesRequest to JSON.
+     * @function toJSON
+     * @memberof ElementPropertiesRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementPropertiesRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementPropertiesRequest;
+})();
+
+$root.ElementPropertiesReply = (function() {
+
+    /**
+     * Properties of an ElementPropertiesReply.
+     * @exports IElementPropertiesReply
+     * @interface IElementPropertiesReply
+     * @property {IElementPropertiesReplyEntry|null} [root] ElementPropertiesReply root
+     */
+
+    /**
+     * Constructs a new ElementPropertiesReply.
+     * @exports ElementPropertiesReply
+     * @classdesc Represents an ElementPropertiesReply.
+     * @implements IElementPropertiesReply
+     * @constructor
+     * @param {IElementPropertiesReply=} [properties] Properties to set
+     */
+    function ElementPropertiesReply(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementPropertiesReply root.
+     * @member {IElementPropertiesReplyEntry|null|undefined} root
+     * @memberof ElementPropertiesReply
+     * @instance
+     */
+    ElementPropertiesReply.prototype.root = null;
+
+    /**
+     * Creates a new ElementPropertiesReply instance using the specified properties.
+     * @function create
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {IElementPropertiesReply=} [properties] Properties to set
+     * @returns {ElementPropertiesReply} ElementPropertiesReply instance
+     */
+    ElementPropertiesReply.create = function create(properties) {
+        return new ElementPropertiesReply(properties);
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesReply message. Does not implicitly {@link ElementPropertiesReply.verify|verify} messages.
+     * @function encode
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {IElementPropertiesReply} message ElementPropertiesReply message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesReply.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.root != null && Object.hasOwnProperty.call(message, "root"))
+            $root.ElementPropertiesReplyEntry.encode(message.root, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesReply message, length delimited. Does not implicitly {@link ElementPropertiesReply.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {IElementPropertiesReply} message ElementPropertiesReply message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesReply.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementPropertiesReply message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementPropertiesReply} ElementPropertiesReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesReply.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementPropertiesReply();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.root = $root.ElementPropertiesReplyEntry.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementPropertiesReply message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementPropertiesReply} ElementPropertiesReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesReply.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementPropertiesReply message.
+     * @function verify
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementPropertiesReply.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.root != null && message.hasOwnProperty("root")) {
+            var error = $root.ElementPropertiesReplyEntry.verify(message.root);
+            if (error)
+                return "root." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates an ElementPropertiesReply message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementPropertiesReply} ElementPropertiesReply
+     */
+    ElementPropertiesReply.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementPropertiesReply)
+            return object;
+        var message = new $root.ElementPropertiesReply();
+        if (object.root != null) {
+            if (typeof object.root !== "object")
+                throw TypeError(".ElementPropertiesReply.root: object expected");
+            message.root = $root.ElementPropertiesReplyEntry.fromObject(object.root);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementPropertiesReply message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementPropertiesReply
+     * @static
+     * @param {ElementPropertiesReply} message ElementPropertiesReply
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementPropertiesReply.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.root = null;
+        if (message.root != null && message.hasOwnProperty("root"))
+            object.root = $root.ElementPropertiesReplyEntry.toObject(message.root, options);
+        return object;
+    };
+
+    /**
+     * Converts this ElementPropertiesReply to JSON.
+     * @function toJSON
+     * @memberof ElementPropertiesReply
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementPropertiesReply.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementPropertiesReply;
+})();
+
+$root.ElementPropertiesReplyEntry = (function() {
+
+    /**
+     * Properties of an ElementPropertiesReplyEntry.
+     * @exports IElementPropertiesReplyEntry
+     * @interface IElementPropertiesReplyEntry
+     * @property {string|null} [label] ElementPropertiesReplyEntry label
+     * @property {string|null} [value] ElementPropertiesReplyEntry value
+     * @property {Array.<IElementPropertiesReplyEntry>|null} [children] ElementPropertiesReplyEntry children
+     */
+
+    /**
+     * Constructs a new ElementPropertiesReplyEntry.
+     * @exports ElementPropertiesReplyEntry
+     * @classdesc Represents an ElementPropertiesReplyEntry.
+     * @implements IElementPropertiesReplyEntry
+     * @constructor
+     * @param {IElementPropertiesReplyEntry=} [properties] Properties to set
+     */
+    function ElementPropertiesReplyEntry(properties) {
+        this.children = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementPropertiesReplyEntry label.
+     * @member {string} label
+     * @memberof ElementPropertiesReplyEntry
+     * @instance
+     */
+    ElementPropertiesReplyEntry.prototype.label = "";
+
+    /**
+     * ElementPropertiesReplyEntry value.
+     * @member {string} value
+     * @memberof ElementPropertiesReplyEntry
+     * @instance
+     */
+    ElementPropertiesReplyEntry.prototype.value = "";
+
+    /**
+     * ElementPropertiesReplyEntry children.
+     * @member {Array.<IElementPropertiesReplyEntry>} children
+     * @memberof ElementPropertiesReplyEntry
+     * @instance
+     */
+    ElementPropertiesReplyEntry.prototype.children = $util.emptyArray;
+
+    /**
+     * Creates a new ElementPropertiesReplyEntry instance using the specified properties.
+     * @function create
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {IElementPropertiesReplyEntry=} [properties] Properties to set
+     * @returns {ElementPropertiesReplyEntry} ElementPropertiesReplyEntry instance
+     */
+    ElementPropertiesReplyEntry.create = function create(properties) {
+        return new ElementPropertiesReplyEntry(properties);
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesReplyEntry message. Does not implicitly {@link ElementPropertiesReplyEntry.verify|verify} messages.
+     * @function encode
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {IElementPropertiesReplyEntry} message ElementPropertiesReplyEntry message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesReplyEntry.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.label != null && Object.hasOwnProperty.call(message, "label"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.label);
+        if (message.value != null && Object.hasOwnProperty.call(message, "value"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.value);
+        if (message.children != null && message.children.length)
+            for (var i = 0; i < message.children.length; ++i)
+                $root.ElementPropertiesReplyEntry.encode(message.children[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementPropertiesReplyEntry message, length delimited. Does not implicitly {@link ElementPropertiesReplyEntry.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {IElementPropertiesReplyEntry} message ElementPropertiesReplyEntry message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementPropertiesReplyEntry.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementPropertiesReplyEntry message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementPropertiesReplyEntry} ElementPropertiesReplyEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesReplyEntry.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementPropertiesReplyEntry();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.label = reader.string();
+                break;
+            case 2:
+                message.value = reader.string();
+                break;
+            case 3:
+                if (!(message.children && message.children.length))
+                    message.children = [];
+                message.children.push($root.ElementPropertiesReplyEntry.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementPropertiesReplyEntry message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementPropertiesReplyEntry} ElementPropertiesReplyEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementPropertiesReplyEntry.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementPropertiesReplyEntry message.
+     * @function verify
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementPropertiesReplyEntry.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.label != null && message.hasOwnProperty("label"))
+            if (!$util.isString(message.label))
+                return "label: string expected";
+        if (message.value != null && message.hasOwnProperty("value"))
+            if (!$util.isString(message.value))
+                return "value: string expected";
+        if (message.children != null && message.hasOwnProperty("children")) {
+            if (!Array.isArray(message.children))
+                return "children: array expected";
+            for (var i = 0; i < message.children.length; ++i) {
+                var error = $root.ElementPropertiesReplyEntry.verify(message.children[i]);
+                if (error)
+                    return "children." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates an ElementPropertiesReplyEntry message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementPropertiesReplyEntry} ElementPropertiesReplyEntry
+     */
+    ElementPropertiesReplyEntry.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementPropertiesReplyEntry)
+            return object;
+        var message = new $root.ElementPropertiesReplyEntry();
+        if (object.label != null)
+            message.label = String(object.label);
+        if (object.value != null)
+            message.value = String(object.value);
+        if (object.children) {
+            if (!Array.isArray(object.children))
+                throw TypeError(".ElementPropertiesReplyEntry.children: array expected");
+            message.children = [];
+            for (var i = 0; i < object.children.length; ++i) {
+                if (typeof object.children[i] !== "object")
+                    throw TypeError(".ElementPropertiesReplyEntry.children: object expected");
+                message.children[i] = $root.ElementPropertiesReplyEntry.fromObject(object.children[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementPropertiesReplyEntry message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementPropertiesReplyEntry
+     * @static
+     * @param {ElementPropertiesReplyEntry} message ElementPropertiesReplyEntry
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementPropertiesReplyEntry.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.children = [];
+        if (options.defaults) {
+            object.label = "";
+            object.value = "";
+        }
+        if (message.label != null && message.hasOwnProperty("label"))
+            object.label = message.label;
+        if (message.value != null && message.hasOwnProperty("value"))
+            object.value = message.value;
+        if (message.children && message.children.length) {
+            object.children = [];
+            for (var j = 0; j < message.children.length; ++j)
+                object.children[j] = $root.ElementPropertiesReplyEntry.toObject(message.children[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this ElementPropertiesReplyEntry to JSON.
+     * @function toJSON
+     * @memberof ElementPropertiesReplyEntry
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementPropertiesReplyEntry.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementPropertiesReplyEntry;
 })();
 
 module.exports = $root;

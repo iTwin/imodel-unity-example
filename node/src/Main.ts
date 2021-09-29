@@ -2,11 +2,16 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { IModelDb, IModelHost, SnapshotDb } from "@bentley/imodeljs-backend";
-import * as yargs from "yargs";
-import { openIModelFromIModelHub } from "./IModelHubDownload";
-import { startProtobufRpcServer } from "./ProtobufRpcServer";
+
+import * as yargs from 'yargs';
+
+import { Logger, LogLevel } from '@bentley/bentleyjs-core';
+import { IModelDb, IModelHost, SnapshotDb } from '@bentley/imodeljs-backend';
+import { Presentation } from '@bentley/presentation-backend';
+import { PresentationUnitSystem } from '@bentley/presentation-common';
+
+import { openIModelFromIModelHub } from './IModelHubDownload';
+import { startProtobufRpcServer } from './ProtobufRpcServer';
 
 export const APP_LOGGER_CATEGORY = "imodel-unity-example";
 
@@ -23,6 +28,11 @@ const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
 
 (async () => {
   await IModelHost.startup();
+
+  Presentation.initialize();
+  Presentation.getManager().activeLocale = "en";
+  Presentation.getManager().activeUnitSystem = PresentationUnitSystem.Metric;
+
   Logger.initializeToConsole();
   Logger.setLevelDefault(LogLevel.Warning);
   Logger.setLevel(APP_LOGGER_CATEGORY, LogLevel.Trace);

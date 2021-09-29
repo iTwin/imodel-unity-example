@@ -83,6 +83,12 @@ namespace Bentley
                 _selectionText =
                     $"Id: {tt.ElementId}\nClass: {tt.ClassLabel}\nCategory: {tt.CategoryLabel}\nModel: {tt.ModelLabel}";
             });
+
+            var propRequestWrapper = new RequestWrapper
+            {
+                ElementPropertiesRequest = new ElementPropertiesRequest { ElementId = _selectedRenderer.name }
+            };
+            _backend.SendRequest(propRequestWrapper, _ => { });
         }
 
         private void UpdateCamera()
