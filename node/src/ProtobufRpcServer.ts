@@ -2,16 +2,22 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { assert, DbResult, Id64Array, Logger } from "@bentley/bentleyjs-core";
-import { Angle } from "@bentley/geometry-core";
-import { ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d } from "@bentley/imodeljs-backend";
+
 import * as ws from "ws";
-import { APP_LOGGER_CATEGORY } from "./Main";
+
+import { assert, ClientRequestContext, DbResult, Id64Array, Logger } from "@bentley/bentleyjs-core";
+import { Angle } from "@bentley/geometry-core";
 import {
-  ICameraViewsReply, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply,
-  IReplyWrapper, ITextureReply,
-  ReplyWrapper, RequestWrapper,
+  ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d,
+} from "@bentley/imodeljs-backend";
+import { Presentation } from "@bentley/presentation-backend";
+
+import {
+  ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
+  IProjectExtentsReply, IReplyWrapper, ITextureReply, ReplyWrapper, RequestWrapper,
 } from "./IModelRpc_pb";
+import { APP_LOGGER_CATEGORY } from "./Main";
+import { ElementPropertiesItem } from "@bentley/presentation-common";
 
 type ProtobufRpcRequestHandler = (socket: ws, iModel: IModelDb, wrapper: RequestWrapper) => void;
 
@@ -36,6 +42,7 @@ const protobufRpcRequestHandlers: { [requestName: string]: ProtobufRpcRequestHan
   elementTooltipRequest: handleElementTooltipRequest,
   projectExtentsRequest: handleProjectExtentsRequest,
   cameraViewsRequest: handleCameraViewsRequest,
+  elementPropertiesRequest: handleElementPropertiesRequest,
 };
 
 const onSocketMessage = (socket: ws, iModel: IModelDb) => (data: ws.Data) => {
@@ -196,4 +203,68 @@ function createCameraViewsReply(viewElement: ViewDefinition3d, requestId: number
   };
 
   return encodeReply(requestId, { cameraViewsReply, requestHasMoreReplies: true });
+}
+
+function handleElementPropertiesRequest(socket: ws, iModel: IModelDb, wrapper: RequestWrapper) {
+  getElementProperties(socket, iModel, wrapper).catch((reason: any) => {
+    Logger.logError(APP_LOGGER_CATEGORY, `${reason}`);
+  });
+}
+
+async function getElementProperties(socket: ws, iModel: IModelDb, wrapper: RequestWrapper): Promise<void> {
+  const request = wrapper.elementPropertiesRequest;
+  assert(!!request && !!request.elementId);
+
+  const elementProperties = await Presentation.getManager().getElementProperties({
+    imodel: iModel,
+    elementId: request.elementId,
+    requestContext: new ClientRequestContext(),
+  });
+
+  if (!elementProperties)
+    return Promise.reject(`getElementProperties returned undefined for ${request.elementId}`);
+
+  const rootProperty: IElementPropertiesReplyEntry = { label: elementProperties.label };
+  rootProperty.children = parseElementPropertiesMap(elementProperties.items);
+
+  socket.send(encodeReply(wrapper.requestId, { elementPropertiesReply: { root: rootProperty } }));
+}
+
+function parseElementPropertiesList(items: ElementPropertiesItem[]): IElementPropertiesReplyEntry[] {
+  const results: IElementPropertiesReplyEntry[] = [];
+
+  for (let i = 0; i < items.length; ++i) {
+    const thisResult: IElementPropertiesReplyEntry = { label: `${i}` };
+    setValueOrChildrenFromElementPropertiesItem(thisResult, items[i]);
+    results.push(thisResult);
+  }
+
+  return results;
+}
+
+function parseElementPropertiesMap(items: {[label: string]: ElementPropertiesItem} ): IElementPropertiesReplyEntry[] {
+  const results: IElementPropertiesReplyEntry[] = [];
+
+  Object.entries(items).map((kvp) => {
+    const thisResult: IElementPropertiesReplyEntry = { label: kvp[0] };
+    setValueOrChildrenFromElementPropertiesItem(thisResult, kvp[1]);
+    results.push(thisResult);
+  });
+
+  return results;
+}
+
+function setValueOrChildrenFromElementPropertiesItem(replyEntry: IElementPropertiesReplyEntry, item: ElementPropertiesItem) {
+  if (item.type === "primitive")
+    replyEntry.value = item.value;
+  else if (item.type === "category")
+    replyEntry.children = parseElementPropertiesMap(item.items);
+  else if (item.type === "struct")
+    replyEntry.children = parseElementPropertiesMap(item.members);
+  else if (item.type === "array") {
+    if (item.valueType === "primitive")
+      replyEntry.children = parseElementPropertiesList(item.values.map((v) => ({ type: "primitive", value: v })));
+    else if (item.valueType === "struct")
+      replyEntry.children = parseElementPropertiesList(item.values.map((v) => ({ type: "struct", members: v })));
+  }
 }

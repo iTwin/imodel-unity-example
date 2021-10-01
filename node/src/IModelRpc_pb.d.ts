@@ -22,6 +22,9 @@ export interface IRequestWrapper {
 
     /** RequestWrapper cameraViewsRequest */
     cameraViewsRequest?: (ICameraViewsRequest|null);
+
+    /** RequestWrapper elementPropertiesRequest */
+    elementPropertiesRequest?: (IElementPropertiesRequest|null);
 }
 
 /** Represents a RequestWrapper. */
@@ -54,8 +57,11 @@ export class RequestWrapper implements IRequestWrapper {
     /** RequestWrapper cameraViewsRequest. */
     public cameraViewsRequest?: (ICameraViewsRequest|null);
 
+    /** RequestWrapper elementPropertiesRequest. */
+    public elementPropertiesRequest?: (IElementPropertiesRequest|null);
+
     /** RequestWrapper msg. */
-    public msg?: ("selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest");
+    public msg?: ("selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest");
 
     /**
      * Creates a new RequestWrapper instance using the specified properties.
@@ -154,6 +160,9 @@ export interface IReplyWrapper {
 
     /** ReplyWrapper cameraViewsReply */
     cameraViewsReply?: (ICameraViewsReply|null);
+
+    /** ReplyWrapper elementPropertiesReply */
+    elementPropertiesReply?: (IElementPropertiesReply|null);
 }
 
 /** Represents a ReplyWrapper. */
@@ -189,8 +198,11 @@ export class ReplyWrapper implements IReplyWrapper {
     /** ReplyWrapper cameraViewsReply. */
     public cameraViewsReply?: (ICameraViewsReply|null);
 
+    /** ReplyWrapper elementPropertiesReply. */
+    public elementPropertiesReply?: (IElementPropertiesReply|null);
+
     /** ReplyWrapper msg. */
-    public msg?: ("selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply");
+    public msg?: ("selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply");
 
     /**
      * Creates a new ReplyWrapper instance using the specified properties.
@@ -1458,6 +1470,288 @@ export class CameraViewsReply implements ICameraViewsReply {
 
     /**
      * Converts this CameraViewsReply to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementPropertiesRequest. */
+export interface IElementPropertiesRequest {
+
+    /** ElementPropertiesRequest elementId */
+    elementId?: (string|null);
+}
+
+/** Represents an ElementPropertiesRequest. */
+export class ElementPropertiesRequest implements IElementPropertiesRequest {
+
+    /**
+     * Constructs a new ElementPropertiesRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementPropertiesRequest);
+
+    /** ElementPropertiesRequest elementId. */
+    public elementId: string;
+
+    /**
+     * Creates a new ElementPropertiesRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementPropertiesRequest instance
+     */
+    public static create(properties?: IElementPropertiesRequest): ElementPropertiesRequest;
+
+    /**
+     * Encodes the specified ElementPropertiesRequest message. Does not implicitly {@link ElementPropertiesRequest.verify|verify} messages.
+     * @param message ElementPropertiesRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementPropertiesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementPropertiesRequest message, length delimited. Does not implicitly {@link ElementPropertiesRequest.verify|verify} messages.
+     * @param message ElementPropertiesRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementPropertiesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementPropertiesRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementPropertiesRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementPropertiesRequest;
+
+    /**
+     * Decodes an ElementPropertiesRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementPropertiesRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementPropertiesRequest;
+
+    /**
+     * Verifies an ElementPropertiesRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementPropertiesRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementPropertiesRequest
+     */
+    public static fromObject(object: { [k: string]: any }): ElementPropertiesRequest;
+
+    /**
+     * Creates a plain object from an ElementPropertiesRequest message. Also converts values to other types if specified.
+     * @param message ElementPropertiesRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementPropertiesRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementPropertiesRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementPropertiesReply. */
+export interface IElementPropertiesReply {
+
+    /** ElementPropertiesReply root */
+    root?: (IElementPropertiesReplyEntry|null);
+}
+
+/** Represents an ElementPropertiesReply. */
+export class ElementPropertiesReply implements IElementPropertiesReply {
+
+    /**
+     * Constructs a new ElementPropertiesReply.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementPropertiesReply);
+
+    /** ElementPropertiesReply root. */
+    public root?: (IElementPropertiesReplyEntry|null);
+
+    /**
+     * Creates a new ElementPropertiesReply instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementPropertiesReply instance
+     */
+    public static create(properties?: IElementPropertiesReply): ElementPropertiesReply;
+
+    /**
+     * Encodes the specified ElementPropertiesReply message. Does not implicitly {@link ElementPropertiesReply.verify|verify} messages.
+     * @param message ElementPropertiesReply message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementPropertiesReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementPropertiesReply message, length delimited. Does not implicitly {@link ElementPropertiesReply.verify|verify} messages.
+     * @param message ElementPropertiesReply message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementPropertiesReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementPropertiesReply message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementPropertiesReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementPropertiesReply;
+
+    /**
+     * Decodes an ElementPropertiesReply message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementPropertiesReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementPropertiesReply;
+
+    /**
+     * Verifies an ElementPropertiesReply message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementPropertiesReply message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementPropertiesReply
+     */
+    public static fromObject(object: { [k: string]: any }): ElementPropertiesReply;
+
+    /**
+     * Creates a plain object from an ElementPropertiesReply message. Also converts values to other types if specified.
+     * @param message ElementPropertiesReply
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementPropertiesReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementPropertiesReply to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementPropertiesReplyEntry. */
+export interface IElementPropertiesReplyEntry {
+
+    /** ElementPropertiesReplyEntry label */
+    label?: (string|null);
+
+    /** ElementPropertiesReplyEntry value */
+    value?: (string|null);
+
+    /** ElementPropertiesReplyEntry children */
+    children?: (IElementPropertiesReplyEntry[]|null);
+}
+
+/** Represents an ElementPropertiesReplyEntry. */
+export class ElementPropertiesReplyEntry implements IElementPropertiesReplyEntry {
+
+    /**
+     * Constructs a new ElementPropertiesReplyEntry.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementPropertiesReplyEntry);
+
+    /** ElementPropertiesReplyEntry label. */
+    public label: string;
+
+    /** ElementPropertiesReplyEntry value. */
+    public value: string;
+
+    /** ElementPropertiesReplyEntry children. */
+    public children: IElementPropertiesReplyEntry[];
+
+    /**
+     * Creates a new ElementPropertiesReplyEntry instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementPropertiesReplyEntry instance
+     */
+    public static create(properties?: IElementPropertiesReplyEntry): ElementPropertiesReplyEntry;
+
+    /**
+     * Encodes the specified ElementPropertiesReplyEntry message. Does not implicitly {@link ElementPropertiesReplyEntry.verify|verify} messages.
+     * @param message ElementPropertiesReplyEntry message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementPropertiesReplyEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementPropertiesReplyEntry message, length delimited. Does not implicitly {@link ElementPropertiesReplyEntry.verify|verify} messages.
+     * @param message ElementPropertiesReplyEntry message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementPropertiesReplyEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementPropertiesReplyEntry message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementPropertiesReplyEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementPropertiesReplyEntry;
+
+    /**
+     * Decodes an ElementPropertiesReplyEntry message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementPropertiesReplyEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementPropertiesReplyEntry;
+
+    /**
+     * Verifies an ElementPropertiesReplyEntry message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementPropertiesReplyEntry message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementPropertiesReplyEntry
+     */
+    public static fromObject(object: { [k: string]: any }): ElementPropertiesReplyEntry;
+
+    /**
+     * Creates a plain object from an ElementPropertiesReplyEntry message. Also converts values to other types if specified.
+     * @param message ElementPropertiesReplyEntry
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementPropertiesReplyEntry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementPropertiesReplyEntry to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

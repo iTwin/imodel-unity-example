@@ -24,7 +24,7 @@ namespace Bentley.Protobuf {
     static IModelRpcReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg9JTW9kZWxScGMucHJvdG8i7AIKDlJlcXVlc3RXcmFwcGVyEhEKCXJlcXVl",
+            "Cg9JTW9kZWxScGMucHJvdG8iqwMKDlJlcXVlc3RXcmFwcGVyEhEKCXJlcXVl",
             "c3RJZBgBIAEoDRI7ChdzZWxlY3RFbGVtZW50SWRzUmVxdWVzdBgCIAEoCzIY",
             "LlNlbGVjdEVsZW1lbnRJZHNSZXF1ZXN0SAASMwoTZXhwb3J0TWVzaGVzUmVx",
             "dWVzdBgDIAEoCzIULkV4cG9ydE1lc2hlc1JlcXVlc3RIABIpCg50ZXh0dXJl",
@@ -32,40 +32,47 @@ namespace Bentley.Protobuf {
             "b2x0aXBSZXF1ZXN0GAUgASgLMhYuRWxlbWVudFRvb2x0aXBSZXF1ZXN0SAAS",
             "NwoVcHJvamVjdEV4dGVudHNSZXF1ZXN0GAYgASgLMhYuUHJvamVjdEV4dGVu",
             "dHNSZXF1ZXN0SAASMQoSY2FtZXJhVmlld3NSZXF1ZXN0GAcgASgLMhMuQ2Ft",
-            "ZXJhVmlld3NSZXF1ZXN0SABCBQoDbXNnIvECCgxSZXBseVdyYXBwZXISEQoJ",
-            "cmVxdWVzdElkGAEgASgNEh0KFXJlcXVlc3RIYXNNb3JlUmVwbGllcxgCIAEo",
-            "CBI3ChVzZWxlY3RFbGVtZW50SWRzUmVwbHkYAyABKAsyFi5TZWxlY3RFbGVt",
-            "ZW50SWRzUmVwbHlIABIvChFleHBvcnRNZXNoZXNSZXBseRgEIAEoCzISLkV4",
-            "cG9ydE1lc2hlc1JlcGx5SAASJQoMdGV4dHVyZVJlcGx5GAUgASgLMg0uVGV4",
-            "dHVyZVJlcGx5SAASMwoTZWxlbWVudFRvb2x0aXBSZXBseRgGIAEoCzIULkVs",
-            "ZW1lbnRUb29sdGlwUmVwbHlIABIzChNwcm9qZWN0RXh0ZW50c1JlcGx5GAcg",
-            "ASgLMhQuUHJvamVjdEV4dGVudHNSZXBseUgAEi0KEGNhbWVyYVZpZXdzUmVw",
-            "bHkYCCABKAsyES5DYW1lcmFWaWV3c1JlcGx5SABCBQoDbXNnIi8KF1NlbGVj",
-            "dEVsZW1lbnRJZHNSZXF1ZXN0EhQKDHNlbGVjdEZpbHRlchgBIAEoCSIrChVT",
-            "ZWxlY3RFbGVtZW50SWRzUmVwbHkSEgoKZWxlbWVudElkcxgBIAMoCSI7ChNF",
-            "eHBvcnRNZXNoZXNSZXF1ZXN0EhIKCmVsZW1lbnRJZHMYASADKAkSEAoIY2hv",
-            "cmRUb2wYAiABKAEigwEKEUV4cG9ydE1lc2hlc1JlcGx5EhEKCWVsZW1lbnRJ",
-            "ZBgBIAEoCRINCgVjb2xvchgCIAEoDRISCgppbmRleENvdW50GAMgASgNEhMK",
-            "C3ZlcnRleENvdW50GAQgASgNEhAKCG1lc2hEYXRhGAUgASgMEhEKCXRleHR1",
-            "cmVJZBgGIAEoCSIjCg5UZXh0dXJlUmVxdWVzdBIRCgl0ZXh0dXJlSWQYASAB",
-            "KAkiNgoMVGV4dHVyZVJlcGx5EhEKCXRleHR1cmVJZBgBIAEoCRITCgt0ZXh0",
-            "dXJlRGF0YRgCIAEoDCIqChVFbGVtZW50VG9vbHRpcFJlcXVlc3QSEQoJZWxl",
-            "bWVudElkGAEgASgJImcKE0VsZW1lbnRUb29sdGlwUmVwbHkSEQoJZWxlbWVu",
-            "dElkGAEgASgJEhIKCmNsYXNzTGFiZWwYAiABKAkSFQoNY2F0ZWdvcnlMYWJl",
-            "bBgDIAEoCRISCgptb2RlbExhYmVsGAQgASgJIhcKFVByb2plY3RFeHRlbnRz",
-            "UmVxdWVzdCJpChNQcm9qZWN0RXh0ZW50c1JlcGx5EgwKBG1pblgYASABKAES",
-            "DAoEbWluWRgCIAEoARIMCgRtaW5aGAMgASgBEgwKBG1heFgYBCABKAESDAoE",
-            "bWF4WRgFIAEoARIMCgRtYXhaGAYgASgBIhQKEkNhbWVyYVZpZXdzUmVxdWVz",
-            "dCKeAQoQQ2FtZXJhVmlld3NSZXBseRIRCgllbGVtZW50SWQYASABKAkSFAoM",
-            "ZGlzcGxheUxhYmVsGAIgASgJEhEKCWV5ZVBvaW50WBgDIAEoARIRCglleWVQ",
-            "b2ludFkYBCABKAESEQoJZXllUG9pbnRaGAUgASgBEgsKA3lhdxgGIAEoARIN",
-            "CgVwaXRjaBgHIAEoARIMCgRyb2xsGAggASgBQhOqAhBCZW50bGV5LlByb3Rv",
-            "YnVmYgZwcm90bzM="));
+            "ZXJhVmlld3NSZXF1ZXN0SAASPQoYZWxlbWVudFByb3BlcnRpZXNSZXF1ZXN0",
+            "GAggASgLMhkuRWxlbWVudFByb3BlcnRpZXNSZXF1ZXN0SABCBQoDbXNnIqwD",
+            "CgxSZXBseVdyYXBwZXISEQoJcmVxdWVzdElkGAEgASgNEh0KFXJlcXVlc3RI",
+            "YXNNb3JlUmVwbGllcxgCIAEoCBI3ChVzZWxlY3RFbGVtZW50SWRzUmVwbHkY",
+            "AyABKAsyFi5TZWxlY3RFbGVtZW50SWRzUmVwbHlIABIvChFleHBvcnRNZXNo",
+            "ZXNSZXBseRgEIAEoCzISLkV4cG9ydE1lc2hlc1JlcGx5SAASJQoMdGV4dHVy",
+            "ZVJlcGx5GAUgASgLMg0uVGV4dHVyZVJlcGx5SAASMwoTZWxlbWVudFRvb2x0",
+            "aXBSZXBseRgGIAEoCzIULkVsZW1lbnRUb29sdGlwUmVwbHlIABIzChNwcm9q",
+            "ZWN0RXh0ZW50c1JlcGx5GAcgASgLMhQuUHJvamVjdEV4dGVudHNSZXBseUgA",
+            "Ei0KEGNhbWVyYVZpZXdzUmVwbHkYCCABKAsyES5DYW1lcmFWaWV3c1JlcGx5",
+            "SAASOQoWZWxlbWVudFByb3BlcnRpZXNSZXBseRgJIAEoCzIXLkVsZW1lbnRQ",
+            "cm9wZXJ0aWVzUmVwbHlIAEIFCgNtc2ciLwoXU2VsZWN0RWxlbWVudElkc1Jl",
+            "cXVlc3QSFAoMc2VsZWN0RmlsdGVyGAEgASgJIisKFVNlbGVjdEVsZW1lbnRJ",
+            "ZHNSZXBseRISCgplbGVtZW50SWRzGAEgAygJIjsKE0V4cG9ydE1lc2hlc1Jl",
+            "cXVlc3QSEgoKZWxlbWVudElkcxgBIAMoCRIQCghjaG9yZFRvbBgCIAEoASKD",
+            "AQoRRXhwb3J0TWVzaGVzUmVwbHkSEQoJZWxlbWVudElkGAEgASgJEg0KBWNv",
+            "bG9yGAIgASgNEhIKCmluZGV4Q291bnQYAyABKA0SEwoLdmVydGV4Q291bnQY",
+            "BCABKA0SEAoIbWVzaERhdGEYBSABKAwSEQoJdGV4dHVyZUlkGAYgASgJIiMK",
+            "DlRleHR1cmVSZXF1ZXN0EhEKCXRleHR1cmVJZBgBIAEoCSI2CgxUZXh0dXJl",
+            "UmVwbHkSEQoJdGV4dHVyZUlkGAEgASgJEhMKC3RleHR1cmVEYXRhGAIgASgM",
+            "IioKFUVsZW1lbnRUb29sdGlwUmVxdWVzdBIRCgllbGVtZW50SWQYASABKAki",
+            "ZwoTRWxlbWVudFRvb2x0aXBSZXBseRIRCgllbGVtZW50SWQYASABKAkSEgoK",
+            "Y2xhc3NMYWJlbBgCIAEoCRIVCg1jYXRlZ29yeUxhYmVsGAMgASgJEhIKCm1v",
+            "ZGVsTGFiZWwYBCABKAkiFwoVUHJvamVjdEV4dGVudHNSZXF1ZXN0ImkKE1By",
+            "b2plY3RFeHRlbnRzUmVwbHkSDAoEbWluWBgBIAEoARIMCgRtaW5ZGAIgASgB",
+            "EgwKBG1pbloYAyABKAESDAoEbWF4WBgEIAEoARIMCgRtYXhZGAUgASgBEgwK",
+            "BG1heFoYBiABKAEiFAoSQ2FtZXJhVmlld3NSZXF1ZXN0Ip4BChBDYW1lcmFW",
+            "aWV3c1JlcGx5EhEKCWVsZW1lbnRJZBgBIAEoCRIUCgxkaXNwbGF5TGFiZWwY",
+            "AiABKAkSEQoJZXllUG9pbnRYGAMgASgBEhEKCWV5ZVBvaW50WRgEIAEoARIR",
+            "CglleWVQb2ludFoYBSABKAESCwoDeWF3GAYgASgBEg0KBXBpdGNoGAcgASgB",
+            "EgwKBHJvbGwYCCABKAEiLQoYRWxlbWVudFByb3BlcnRpZXNSZXF1ZXN0EhEK",
+            "CWVsZW1lbnRJZBgBIAEoCSJEChZFbGVtZW50UHJvcGVydGllc1JlcGx5EioK",
+            "BHJvb3QYASABKAsyHC5FbGVtZW50UHJvcGVydGllc1JlcGx5RW50cnkiawob",
+            "RWxlbWVudFByb3BlcnRpZXNSZXBseUVudHJ5Eg0KBWxhYmVsGAEgASgJEg0K",
+            "BXZhbHVlGAIgASgJEi4KCGNoaWxkcmVuGAMgAygLMhwuRWxlbWVudFByb3Bl",
+            "cnRpZXNSZXBseUVudHJ5QhOqAhBCZW50bGV5LlByb3RvYnVmYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.RequestWrapper), global::Bentley.Protobuf.RequestWrapper.Parser, new[]{ "RequestId", "SelectElementIdsRequest", "ExportMeshesRequest", "TextureRequest", "ElementTooltipRequest", "ProjectExtentsRequest", "CameraViewsRequest" }, new[]{ "Msg" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ReplyWrapper), global::Bentley.Protobuf.ReplyWrapper.Parser, new[]{ "RequestId", "RequestHasMoreReplies", "SelectElementIdsReply", "ExportMeshesReply", "TextureReply", "ElementTooltipReply", "ProjectExtentsReply", "CameraViewsReply" }, new[]{ "Msg" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.RequestWrapper), global::Bentley.Protobuf.RequestWrapper.Parser, new[]{ "RequestId", "SelectElementIdsRequest", "ExportMeshesRequest", "TextureRequest", "ElementTooltipRequest", "ProjectExtentsRequest", "CameraViewsRequest", "ElementPropertiesRequest" }, new[]{ "Msg" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ReplyWrapper), global::Bentley.Protobuf.ReplyWrapper.Parser, new[]{ "RequestId", "RequestHasMoreReplies", "SelectElementIdsReply", "ExportMeshesReply", "TextureReply", "ElementTooltipReply", "ProjectExtentsReply", "CameraViewsReply", "ElementPropertiesReply" }, new[]{ "Msg" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.SelectElementIdsRequest), global::Bentley.Protobuf.SelectElementIdsRequest.Parser, new[]{ "SelectFilter" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.SelectElementIdsReply), global::Bentley.Protobuf.SelectElementIdsReply.Parser, new[]{ "ElementIds" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ExportMeshesRequest), global::Bentley.Protobuf.ExportMeshesRequest.Parser, new[]{ "ElementIds", "ChordTol" }, null, null, null),
@@ -77,7 +84,10 @@ namespace Bentley.Protobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ProjectExtentsRequest), global::Bentley.Protobuf.ProjectExtentsRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ProjectExtentsReply), global::Bentley.Protobuf.ProjectExtentsReply.Parser, new[]{ "MinX", "MinY", "MinZ", "MaxX", "MaxY", "MaxZ" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.CameraViewsRequest), global::Bentley.Protobuf.CameraViewsRequest.Parser, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.CameraViewsReply), global::Bentley.Protobuf.CameraViewsReply.Parser, new[]{ "ElementId", "DisplayLabel", "EyePointX", "EyePointY", "EyePointZ", "Yaw", "Pitch", "Roll" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.CameraViewsReply), global::Bentley.Protobuf.CameraViewsReply.Parser, new[]{ "ElementId", "DisplayLabel", "EyePointX", "EyePointY", "EyePointZ", "Yaw", "Pitch", "Roll" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ElementPropertiesRequest), global::Bentley.Protobuf.ElementPropertiesRequest.Parser, new[]{ "ElementId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ElementPropertiesReply), global::Bentley.Protobuf.ElementPropertiesReply.Parser, new[]{ "Root" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Bentley.Protobuf.ElementPropertiesReplyEntry), global::Bentley.Protobuf.ElementPropertiesReplyEntry.Parser, new[]{ "Label", "Value", "Children" }, null, null, null)
           }));
     }
     #endregion
@@ -128,6 +138,9 @@ namespace Bentley.Protobuf {
           break;
         case MsgOneofCase.CameraViewsRequest:
           CameraViewsRequest = other.CameraViewsRequest.Clone();
+          break;
+        case MsgOneofCase.ElementPropertiesRequest:
+          ElementPropertiesRequest = other.ElementPropertiesRequest.Clone();
           break;
       }
 
@@ -216,6 +229,17 @@ namespace Bentley.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "elementPropertiesRequest" field.</summary>
+    public const int ElementPropertiesRequestFieldNumber = 8;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Bentley.Protobuf.ElementPropertiesRequest ElementPropertiesRequest {
+      get { return msgCase_ == MsgOneofCase.ElementPropertiesRequest ? (global::Bentley.Protobuf.ElementPropertiesRequest) msg_ : null; }
+      set {
+        msg_ = value;
+        msgCase_ = value == null ? MsgOneofCase.None : MsgOneofCase.ElementPropertiesRequest;
+      }
+    }
+
     private object msg_;
     /// <summary>Enum of possible cases for the "msg" oneof.</summary>
     public enum MsgOneofCase {
@@ -226,6 +250,7 @@ namespace Bentley.Protobuf {
       ElementTooltipRequest = 5,
       ProjectExtentsRequest = 6,
       CameraViewsRequest = 7,
+      ElementPropertiesRequest = 8,
     }
     private MsgOneofCase msgCase_ = MsgOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -259,6 +284,7 @@ namespace Bentley.Protobuf {
       if (!object.Equals(ElementTooltipRequest, other.ElementTooltipRequest)) return false;
       if (!object.Equals(ProjectExtentsRequest, other.ProjectExtentsRequest)) return false;
       if (!object.Equals(CameraViewsRequest, other.CameraViewsRequest)) return false;
+      if (!object.Equals(ElementPropertiesRequest, other.ElementPropertiesRequest)) return false;
       if (MsgCase != other.MsgCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -273,6 +299,7 @@ namespace Bentley.Protobuf {
       if (msgCase_ == MsgOneofCase.ElementTooltipRequest) hash ^= ElementTooltipRequest.GetHashCode();
       if (msgCase_ == MsgOneofCase.ProjectExtentsRequest) hash ^= ProjectExtentsRequest.GetHashCode();
       if (msgCase_ == MsgOneofCase.CameraViewsRequest) hash ^= CameraViewsRequest.GetHashCode();
+      if (msgCase_ == MsgOneofCase.ElementPropertiesRequest) hash ^= ElementPropertiesRequest.GetHashCode();
       hash ^= (int) msgCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -315,6 +342,10 @@ namespace Bentley.Protobuf {
         output.WriteRawTag(58);
         output.WriteMessage(CameraViewsRequest);
       }
+      if (msgCase_ == MsgOneofCase.ElementPropertiesRequest) {
+        output.WriteRawTag(66);
+        output.WriteMessage(ElementPropertiesRequest);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -343,6 +374,9 @@ namespace Bentley.Protobuf {
       }
       if (msgCase_ == MsgOneofCase.CameraViewsRequest) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(CameraViewsRequest);
+      }
+      if (msgCase_ == MsgOneofCase.ElementPropertiesRequest) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ElementPropertiesRequest);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -394,6 +428,12 @@ namespace Bentley.Protobuf {
             CameraViewsRequest = new global::Bentley.Protobuf.CameraViewsRequest();
           }
           CameraViewsRequest.MergeFrom(other.CameraViewsRequest);
+          break;
+        case MsgOneofCase.ElementPropertiesRequest:
+          if (ElementPropertiesRequest == null) {
+            ElementPropertiesRequest = new global::Bentley.Protobuf.ElementPropertiesRequest();
+          }
+          ElementPropertiesRequest.MergeFrom(other.ElementPropertiesRequest);
           break;
       }
 
@@ -466,6 +506,15 @@ namespace Bentley.Protobuf {
             CameraViewsRequest = subBuilder;
             break;
           }
+          case 66: {
+            global::Bentley.Protobuf.ElementPropertiesRequest subBuilder = new global::Bentley.Protobuf.ElementPropertiesRequest();
+            if (msgCase_ == MsgOneofCase.ElementPropertiesRequest) {
+              subBuilder.MergeFrom(ElementPropertiesRequest);
+            }
+            input.ReadMessage(subBuilder);
+            ElementPropertiesRequest = subBuilder;
+            break;
+          }
         }
       }
     }
@@ -517,6 +566,9 @@ namespace Bentley.Protobuf {
           break;
         case MsgOneofCase.CameraViewsReply:
           CameraViewsReply = other.CameraViewsReply.Clone();
+          break;
+        case MsgOneofCase.ElementPropertiesReply:
+          ElementPropertiesReply = other.ElementPropertiesReply.Clone();
           break;
       }
 
@@ -616,6 +668,17 @@ namespace Bentley.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "elementPropertiesReply" field.</summary>
+    public const int ElementPropertiesReplyFieldNumber = 9;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Bentley.Protobuf.ElementPropertiesReply ElementPropertiesReply {
+      get { return msgCase_ == MsgOneofCase.ElementPropertiesReply ? (global::Bentley.Protobuf.ElementPropertiesReply) msg_ : null; }
+      set {
+        msg_ = value;
+        msgCase_ = value == null ? MsgOneofCase.None : MsgOneofCase.ElementPropertiesReply;
+      }
+    }
+
     private object msg_;
     /// <summary>Enum of possible cases for the "msg" oneof.</summary>
     public enum MsgOneofCase {
@@ -626,6 +689,7 @@ namespace Bentley.Protobuf {
       ElementTooltipReply = 6,
       ProjectExtentsReply = 7,
       CameraViewsReply = 8,
+      ElementPropertiesReply = 9,
     }
     private MsgOneofCase msgCase_ = MsgOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -660,6 +724,7 @@ namespace Bentley.Protobuf {
       if (!object.Equals(ElementTooltipReply, other.ElementTooltipReply)) return false;
       if (!object.Equals(ProjectExtentsReply, other.ProjectExtentsReply)) return false;
       if (!object.Equals(CameraViewsReply, other.CameraViewsReply)) return false;
+      if (!object.Equals(ElementPropertiesReply, other.ElementPropertiesReply)) return false;
       if (MsgCase != other.MsgCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -675,6 +740,7 @@ namespace Bentley.Protobuf {
       if (msgCase_ == MsgOneofCase.ElementTooltipReply) hash ^= ElementTooltipReply.GetHashCode();
       if (msgCase_ == MsgOneofCase.ProjectExtentsReply) hash ^= ProjectExtentsReply.GetHashCode();
       if (msgCase_ == MsgOneofCase.CameraViewsReply) hash ^= CameraViewsReply.GetHashCode();
+      if (msgCase_ == MsgOneofCase.ElementPropertiesReply) hash ^= ElementPropertiesReply.GetHashCode();
       hash ^= (int) msgCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -721,6 +787,10 @@ namespace Bentley.Protobuf {
         output.WriteRawTag(66);
         output.WriteMessage(CameraViewsReply);
       }
+      if (msgCase_ == MsgOneofCase.ElementPropertiesReply) {
+        output.WriteRawTag(74);
+        output.WriteMessage(ElementPropertiesReply);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -752,6 +822,9 @@ namespace Bentley.Protobuf {
       }
       if (msgCase_ == MsgOneofCase.CameraViewsReply) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(CameraViewsReply);
+      }
+      if (msgCase_ == MsgOneofCase.ElementPropertiesReply) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ElementPropertiesReply);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -806,6 +879,12 @@ namespace Bentley.Protobuf {
             CameraViewsReply = new global::Bentley.Protobuf.CameraViewsReply();
           }
           CameraViewsReply.MergeFrom(other.CameraViewsReply);
+          break;
+        case MsgOneofCase.ElementPropertiesReply:
+          if (ElementPropertiesReply == null) {
+            ElementPropertiesReply = new global::Bentley.Protobuf.ElementPropertiesReply();
+          }
+          ElementPropertiesReply.MergeFrom(other.ElementPropertiesReply);
           break;
       }
 
@@ -880,6 +959,15 @@ namespace Bentley.Protobuf {
             }
             input.ReadMessage(subBuilder);
             CameraViewsReply = subBuilder;
+            break;
+          }
+          case 74: {
+            global::Bentley.Protobuf.ElementPropertiesReply subBuilder = new global::Bentley.Protobuf.ElementPropertiesReply();
+            if (msgCase_ == MsgOneofCase.ElementPropertiesReply) {
+              subBuilder.MergeFrom(ElementPropertiesReply);
+            }
+            input.ReadMessage(subBuilder);
+            ElementPropertiesReply = subBuilder;
             break;
           }
         }
@@ -2978,6 +3066,447 @@ namespace Bentley.Protobuf {
           }
           case 65: {
             Roll = input.ReadDouble();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ElementPropertiesRequest : pb::IMessage<ElementPropertiesRequest> {
+    private static readonly pb::MessageParser<ElementPropertiesRequest> _parser = new pb::MessageParser<ElementPropertiesRequest>(() => new ElementPropertiesRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ElementPropertiesRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Bentley.Protobuf.IModelRpcReflection.Descriptor.MessageTypes[14]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesRequest(ElementPropertiesRequest other) : this() {
+      elementId_ = other.elementId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesRequest Clone() {
+      return new ElementPropertiesRequest(this);
+    }
+
+    /// <summary>Field number for the "elementId" field.</summary>
+    public const int ElementIdFieldNumber = 1;
+    private string elementId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ElementId {
+      get { return elementId_; }
+      set {
+        elementId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ElementPropertiesRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ElementPropertiesRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ElementId != other.ElementId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ElementId.Length != 0) hash ^= ElementId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (ElementId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ElementId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (ElementId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ElementId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ElementPropertiesRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ElementId.Length != 0) {
+        ElementId = other.ElementId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            ElementId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ElementPropertiesReply : pb::IMessage<ElementPropertiesReply> {
+    private static readonly pb::MessageParser<ElementPropertiesReply> _parser = new pb::MessageParser<ElementPropertiesReply>(() => new ElementPropertiesReply());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ElementPropertiesReply> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Bentley.Protobuf.IModelRpcReflection.Descriptor.MessageTypes[15]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReply() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReply(ElementPropertiesReply other) : this() {
+      root_ = other.root_ != null ? other.root_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReply Clone() {
+      return new ElementPropertiesReply(this);
+    }
+
+    /// <summary>Field number for the "root" field.</summary>
+    public const int RootFieldNumber = 1;
+    private global::Bentley.Protobuf.ElementPropertiesReplyEntry root_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Bentley.Protobuf.ElementPropertiesReplyEntry Root {
+      get { return root_; }
+      set {
+        root_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ElementPropertiesReply);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ElementPropertiesReply other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Root, other.Root)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (root_ != null) hash ^= Root.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (root_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Root);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (root_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Root);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ElementPropertiesReply other) {
+      if (other == null) {
+        return;
+      }
+      if (other.root_ != null) {
+        if (root_ == null) {
+          Root = new global::Bentley.Protobuf.ElementPropertiesReplyEntry();
+        }
+        Root.MergeFrom(other.Root);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (root_ == null) {
+              Root = new global::Bentley.Protobuf.ElementPropertiesReplyEntry();
+            }
+            input.ReadMessage(Root);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ElementPropertiesReplyEntry : pb::IMessage<ElementPropertiesReplyEntry> {
+    private static readonly pb::MessageParser<ElementPropertiesReplyEntry> _parser = new pb::MessageParser<ElementPropertiesReplyEntry>(() => new ElementPropertiesReplyEntry());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ElementPropertiesReplyEntry> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Bentley.Protobuf.IModelRpcReflection.Descriptor.MessageTypes[16]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReplyEntry() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReplyEntry(ElementPropertiesReplyEntry other) : this() {
+      label_ = other.label_;
+      value_ = other.value_;
+      children_ = other.children_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ElementPropertiesReplyEntry Clone() {
+      return new ElementPropertiesReplyEntry(this);
+    }
+
+    /// <summary>Field number for the "label" field.</summary>
+    public const int LabelFieldNumber = 1;
+    private string label_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Label {
+      get { return label_; }
+      set {
+        label_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 2;
+    private string value_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Value {
+      get { return value_; }
+      set {
+        value_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "children" field.</summary>
+    public const int ChildrenFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::Bentley.Protobuf.ElementPropertiesReplyEntry> _repeated_children_codec
+        = pb::FieldCodec.ForMessage(26, global::Bentley.Protobuf.ElementPropertiesReplyEntry.Parser);
+    private readonly pbc::RepeatedField<global::Bentley.Protobuf.ElementPropertiesReplyEntry> children_ = new pbc::RepeatedField<global::Bentley.Protobuf.ElementPropertiesReplyEntry>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Bentley.Protobuf.ElementPropertiesReplyEntry> Children {
+      get { return children_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ElementPropertiesReplyEntry);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ElementPropertiesReplyEntry other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Label != other.Label) return false;
+      if (Value != other.Value) return false;
+      if(!children_.Equals(other.children_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Label.Length != 0) hash ^= Label.GetHashCode();
+      if (Value.Length != 0) hash ^= Value.GetHashCode();
+      hash ^= children_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Label.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Label);
+      }
+      if (Value.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Value);
+      }
+      children_.WriteTo(output, _repeated_children_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Label.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Label);
+      }
+      if (Value.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Value);
+      }
+      size += children_.CalculateSize(_repeated_children_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ElementPropertiesReplyEntry other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Label.Length != 0) {
+        Label = other.Label;
+      }
+      if (other.Value.Length != 0) {
+        Value = other.Value;
+      }
+      children_.Add(other.children_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Label = input.ReadString();
+            break;
+          }
+          case 18: {
+            Value = input.ReadString();
+            break;
+          }
+          case 26: {
+            children_.AddEntriesFrom(input, _repeated_children_codec);
             break;
           }
         }

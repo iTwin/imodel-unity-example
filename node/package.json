@@ -28,6 +28,7 @@
     "@bentley/imodeljs-i18n": "2.19.0",
     "@bentley/imodeljs-quantity": "2.19.0",
     "@bentley/itwin-client": "2.19.0",
+    "@bentley/presentation-backend": "2.19.0",
     "@bentley/presentation-common": "2.19.0",
     "@bentley/product-settings-client": "2.19.0",
     "@bentley/rbac-client": "2.19.0",
