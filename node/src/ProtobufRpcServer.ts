@@ -3,21 +3,21 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import * as ws from 'ws';
+import * as ws from "ws";
 
-import { assert, ClientRequestContext, DbResult, Id64Array, Logger } from '@bentley/bentleyjs-core';
-import { Angle } from '@bentley/geometry-core';
+import { assert, ClientRequestContext, DbResult, Id64Array, Logger } from "@bentley/bentleyjs-core";
+import { Angle } from "@bentley/geometry-core";
 import {
-    ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d
-} from '@bentley/imodeljs-backend';
-import { Presentation } from '@bentley/presentation-backend';
+  ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d,
+} from "@bentley/imodeljs-backend";
+import { Presentation } from "@bentley/presentation-backend";
 
 import {
-    ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
-    IProjectExtentsReply, IReplyWrapper, ITextureReply, ReplyWrapper, RequestWrapper
-} from './IModelRpc_pb';
-import { APP_LOGGER_CATEGORY } from './Main';
-import { ElementProperties, ElementPropertiesItem } from '@bentley/presentation-common';
+  ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
+  IProjectExtentsReply, IReplyWrapper, ITextureReply, ReplyWrapper, RequestWrapper,
+} from "./IModelRpc_pb";
+import { APP_LOGGER_CATEGORY } from "./Main";
+import { ElementPropertiesItem } from "@bentley/presentation-common";
 
 type ProtobufRpcRequestHandler = (socket: ws, iModel: IModelDb, wrapper: RequestWrapper) => void;
 
