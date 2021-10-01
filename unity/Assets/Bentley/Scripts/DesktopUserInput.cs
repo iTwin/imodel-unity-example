@@ -3,6 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
+using System.Text;
 using Bentley.Protobuf;
 using UnityEngine;
 
@@ -20,12 +21,16 @@ namespace Bentley
         private readonly Material _selectionMaterial;
         private readonly SavedViews _savedViews;
 
-        private string _selectionText;
         private MeshRenderer _selectedRenderer;
         private Material _selectedOriginalMaterial;
 
         private readonly Camera _camera;
         private readonly Transform _cameraTransform;
+
+        private GUIStyle _propertiesBoxGuiStyle;
+        private GUIContent _propertiesText;
+        private const float PropertiesBoxWidth = 400;
+        private float _propertiesBoxHeight;
 
         public DesktopUserInput(Material opaqueMaterial, BackendRouter backend, SavedViews savedViews)
         {
@@ -50,7 +55,17 @@ namespace Bentley
 
         public void OnGUI()
         {
-            if (_selectionText != null) GUI.Box(new Rect(10, 10, 300, 70), _selectionText);
+            if (_propertiesBoxGuiStyle == null)
+            {
+                _propertiesBoxGuiStyle = new GUIStyle(GUI.skin.box);
+                _propertiesBoxGuiStyle.alignment = TextAnchor.UpperLeft;
+            }
+
+            if (_propertiesText != null)
+            {
+                float height = System.Math.Min(Screen.height - 20, _propertiesBoxHeight);
+                GUI.Box(new Rect(10, 10, 300, System.Math.Min(Screen.height - 20, height)), _propertiesText, _propertiesBoxGuiStyle);
+            }
         }
 
         private void ClearSelection()
@@ -60,7 +75,7 @@ namespace Bentley
             _selectedRenderer.sharedMaterial = _selectedOriginalMaterial;
             _selectedRenderer = null;
             _selectedOriginalMaterial = null;
-            _selectionText = null;
+            _propertiesText = null;
         }
 
         private void SetSelectionFromCursor()
@@ -73,22 +88,34 @@ namespace Bentley
             _selectedOriginalMaterial = _selectedRenderer.sharedMaterial;
             _selectedRenderer.material = _selectionMaterial;
 
-            var requestWrapper = new RequestWrapper
-            {
-                ElementTooltipRequest = new ElementTooltipRequest { ElementId = _selectedRenderer.name }
-            };
-            _backend.SendRequest(requestWrapper, replyWrapper =>
-            {
-                ElementTooltipReply tt = replyWrapper.ElementTooltipReply;
-                _selectionText =
-                    $"Id: {tt.ElementId}\nClass: {tt.ClassLabel}\nCategory: {tt.CategoryLabel}\nModel: {tt.ModelLabel}";
-            });
-
             var propRequestWrapper = new RequestWrapper
             {
                 ElementPropertiesRequest = new ElementPropertiesRequest { ElementId = _selectedRenderer.name }
             };
-            _backend.SendRequest(propRequestWrapper, _ => { });
+            _backend.SendRequest(propRequestWrapper, propReplyWrapper =>
+            {
+                var propStringBuilder = new StringBuilder(512);
+                BuildPropertiesString(propStringBuilder, propReplyWrapper.ElementPropertiesReply.Root, "");
+
+                _propertiesText = new GUIContent(propStringBuilder.ToString());
+                _propertiesBoxHeight = _propertiesBoxGuiStyle.CalcHeight(_propertiesText, PropertiesBoxWidth);
+            });
+        }
+
+        private static void BuildPropertiesString(StringBuilder sb, ElementPropertiesReplyEntry entry, string indent)
+        {
+            if (entry.Children.Count == 0)
+            {
+                sb.AppendLine($"{indent}{entry.Label}: {entry.Value}");
+                return;
+            }
+
+            sb.AppendLine($"{indent}{entry.Label}");
+            foreach (ElementPropertiesReplyEntry child in entry.Children)
+            {
+                string childIndent = indent + "  ";
+                BuildPropertiesString(sb, child, childIndent);
+            }
         }
 
         private void UpdateCamera()

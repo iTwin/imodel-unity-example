@@ -227,8 +227,6 @@ async function getElementProperties(socket: ws, iModel: IModelDb, wrapper: Reque
   const rootProperty: IElementPropertiesReplyEntry = { label: elementProperties.label };
   rootProperty.children = parseElementPropertiesMap(elementProperties.items);
 
-  Logger.logInfo(APP_LOGGER_CATEGORY, `${JSON.stringify(rootProperty, undefined, 2)}`);
-
   socket.send(encodeReply(wrapper.requestId, { elementPropertiesReply: { root: rootProperty } }));
 }
 
