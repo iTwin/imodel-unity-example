@@ -15,6 +15,7 @@ message RequestWrapper {
     ProjectExtentsRequest projectExtentsRequest = 6;
     CameraViewsRequest cameraViewsRequest = 7;
     ElementPropertiesRequest elementPropertiesRequest = 8;
+    ElementAABBsRequest elementAABBsRequest = 9;
   }
 }
 
@@ -29,6 +30,7 @@ message ReplyWrapper {
     ProjectExtentsReply projectExtentsReply = 7;
     CameraViewsReply cameraViewsReply = 8;
     ElementPropertiesReply elementPropertiesReply = 9;
+    ElementAABBsReply elementAABBsReply = 10;
   }
 }
 
@@ -114,4 +116,24 @@ message ElementPropertiesReplyEntry {
   string label = 1;
   string value = 2;
   repeated ElementPropertiesReplyEntry children = 3;
+}
+
+// N by volume, descending
+message ElementAABBsRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message ElementAABBsReply {
+  repeated ElementAABBEntry boxes = 1;
+}
+
+message ElementAABBEntry {
+  string elementId = 1;
+  double minX = 2;
+  double minY = 3;
+  double minZ = 4;
+  double maxX = 5;
+  double maxY = 6;
+  double maxZ = 7;
 }

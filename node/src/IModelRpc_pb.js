@@ -23,6 +23,7 @@ $root.RequestWrapper = (function() {
      * @property {IProjectExtentsRequest|null} [projectExtentsRequest] RequestWrapper projectExtentsRequest
      * @property {ICameraViewsRequest|null} [cameraViewsRequest] RequestWrapper cameraViewsRequest
      * @property {IElementPropertiesRequest|null} [elementPropertiesRequest] RequestWrapper elementPropertiesRequest
+     * @property {IElementAABBsRequest|null} [elementAABBsRequest] RequestWrapper elementAABBsRequest
      */
 
     /**
@@ -104,17 +105,25 @@ $root.RequestWrapper = (function() {
      */
     RequestWrapper.prototype.elementPropertiesRequest = null;
 
+    /**
+     * RequestWrapper elementAABBsRequest.
+     * @member {IElementAABBsRequest|null|undefined} elementAABBsRequest
+     * @memberof RequestWrapper
+     * @instance
+     */
+    RequestWrapper.prototype.elementAABBsRequest = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * RequestWrapper msg.
-     * @member {"selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest"|undefined} msg
+     * @member {"selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest"|"elementAABBsRequest"|undefined} msg
      * @memberof RequestWrapper
      * @instance
      */
     Object.defineProperty(RequestWrapper.prototype, "msg", {
-        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsRequest", "exportMeshesRequest", "textureRequest", "elementTooltipRequest", "projectExtentsRequest", "cameraViewsRequest", "elementPropertiesRequest"]),
+        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsRequest", "exportMeshesRequest", "textureRequest", "elementTooltipRequest", "projectExtentsRequest", "cameraViewsRequest", "elementPropertiesRequest", "elementAABBsRequest"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -158,6 +167,8 @@ $root.RequestWrapper = (function() {
             $root.CameraViewsRequest.encode(message.cameraViewsRequest, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.elementPropertiesRequest != null && Object.hasOwnProperty.call(message, "elementPropertiesRequest"))
             $root.ElementPropertiesRequest.encode(message.elementPropertiesRequest, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.elementAABBsRequest != null && Object.hasOwnProperty.call(message, "elementAABBsRequest"))
+            $root.ElementAABBsRequest.encode(message.elementAABBsRequest, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         return writer;
     };
 
@@ -215,6 +226,9 @@ $root.RequestWrapper = (function() {
                 break;
             case 8:
                 message.elementPropertiesRequest = $root.ElementPropertiesRequest.decode(reader, reader.uint32());
+                break;
+            case 9:
+                message.elementAABBsRequest = $root.ElementAABBsRequest.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -323,6 +337,16 @@ $root.RequestWrapper = (function() {
                     return "elementPropertiesRequest." + error;
             }
         }
+        if (message.elementAABBsRequest != null && message.hasOwnProperty("elementAABBsRequest")) {
+            if (properties.msg === 1)
+                return "msg: multiple values";
+            properties.msg = 1;
+            {
+                var error = $root.ElementAABBsRequest.verify(message.elementAABBsRequest);
+                if (error)
+                    return "elementAABBsRequest." + error;
+            }
+        }
         return null;
     };
 
@@ -374,6 +398,11 @@ $root.RequestWrapper = (function() {
             if (typeof object.elementPropertiesRequest !== "object")
                 throw TypeError(".RequestWrapper.elementPropertiesRequest: object expected");
             message.elementPropertiesRequest = $root.ElementPropertiesRequest.fromObject(object.elementPropertiesRequest);
+        }
+        if (object.elementAABBsRequest != null) {
+            if (typeof object.elementAABBsRequest !== "object")
+                throw TypeError(".RequestWrapper.elementAABBsRequest: object expected");
+            message.elementAABBsRequest = $root.ElementAABBsRequest.fromObject(object.elementAABBsRequest);
         }
         return message;
     };
@@ -430,6 +459,11 @@ $root.RequestWrapper = (function() {
             if (options.oneofs)
                 object.msg = "elementPropertiesRequest";
         }
+        if (message.elementAABBsRequest != null && message.hasOwnProperty("elementAABBsRequest")) {
+            object.elementAABBsRequest = $root.ElementAABBsRequest.toObject(message.elementAABBsRequest, options);
+            if (options.oneofs)
+                object.msg = "elementAABBsRequest";
+        }
         return object;
     };
 
@@ -462,6 +496,7 @@ $root.ReplyWrapper = (function() {
      * @property {IProjectExtentsReply|null} [projectExtentsReply] ReplyWrapper projectExtentsReply
      * @property {ICameraViewsReply|null} [cameraViewsReply] ReplyWrapper cameraViewsReply
      * @property {IElementPropertiesReply|null} [elementPropertiesReply] ReplyWrapper elementPropertiesReply
+     * @property {IElementAABBsReply|null} [elementAABBsReply] ReplyWrapper elementAABBsReply
      */
 
     /**
@@ -551,17 +586,25 @@ $root.ReplyWrapper = (function() {
      */
     ReplyWrapper.prototype.elementPropertiesReply = null;
 
+    /**
+     * ReplyWrapper elementAABBsReply.
+     * @member {IElementAABBsReply|null|undefined} elementAABBsReply
+     * @memberof ReplyWrapper
+     * @instance
+     */
+    ReplyWrapper.prototype.elementAABBsReply = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ReplyWrapper msg.
-     * @member {"selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply"|undefined} msg
+     * @member {"selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply"|"elementAABBsReply"|undefined} msg
      * @memberof ReplyWrapper
      * @instance
      */
     Object.defineProperty(ReplyWrapper.prototype, "msg", {
-        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsReply", "exportMeshesReply", "textureReply", "elementTooltipReply", "projectExtentsReply", "cameraViewsReply", "elementPropertiesReply"]),
+        get: $util.oneOfGetter($oneOfFields = ["selectElementIdsReply", "exportMeshesReply", "textureReply", "elementTooltipReply", "projectExtentsReply", "cameraViewsReply", "elementPropertiesReply", "elementAABBsReply"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -607,6 +650,8 @@ $root.ReplyWrapper = (function() {
             $root.CameraViewsReply.encode(message.cameraViewsReply, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         if (message.elementPropertiesReply != null && Object.hasOwnProperty.call(message, "elementPropertiesReply"))
             $root.ElementPropertiesReply.encode(message.elementPropertiesReply, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+        if (message.elementAABBsReply != null && Object.hasOwnProperty.call(message, "elementAABBsReply"))
+            $root.ElementAABBsReply.encode(message.elementAABBsReply, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         return writer;
     };
 
@@ -667,6 +712,9 @@ $root.ReplyWrapper = (function() {
                 break;
             case 9:
                 message.elementPropertiesReply = $root.ElementPropertiesReply.decode(reader, reader.uint32());
+                break;
+            case 10:
+                message.elementAABBsReply = $root.ElementAABBsReply.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -778,6 +826,16 @@ $root.ReplyWrapper = (function() {
                     return "elementPropertiesReply." + error;
             }
         }
+        if (message.elementAABBsReply != null && message.hasOwnProperty("elementAABBsReply")) {
+            if (properties.msg === 1)
+                return "msg: multiple values";
+            properties.msg = 1;
+            {
+                var error = $root.ElementAABBsReply.verify(message.elementAABBsReply);
+                if (error)
+                    return "elementAABBsReply." + error;
+            }
+        }
         return null;
     };
 
@@ -831,6 +889,11 @@ $root.ReplyWrapper = (function() {
             if (typeof object.elementPropertiesReply !== "object")
                 throw TypeError(".ReplyWrapper.elementPropertiesReply: object expected");
             message.elementPropertiesReply = $root.ElementPropertiesReply.fromObject(object.elementPropertiesReply);
+        }
+        if (object.elementAABBsReply != null) {
+            if (typeof object.elementAABBsReply !== "object")
+                throw TypeError(".ReplyWrapper.elementAABBsReply: object expected");
+            message.elementAABBsReply = $root.ElementAABBsReply.fromObject(object.elementAABBsReply);
         }
         return message;
     };
@@ -890,6 +953,11 @@ $root.ReplyWrapper = (function() {
             object.elementPropertiesReply = $root.ElementPropertiesReply.toObject(message.elementPropertiesReply, options);
             if (options.oneofs)
                 object.msg = "elementPropertiesReply";
+        }
+        if (message.elementAABBsReply != null && message.hasOwnProperty("elementAABBsReply")) {
+            object.elementAABBsReply = $root.ElementAABBsReply.toObject(message.elementAABBsReply, options);
+            if (options.oneofs)
+                object.msg = "elementAABBsReply";
         }
         return object;
     };
@@ -4269,6 +4337,744 @@ $root.ElementPropertiesReplyEntry = (function() {
     };
 
     return ElementPropertiesReplyEntry;
+})();
+
+$root.ElementAABBsRequest = (function() {
+
+    /**
+     * Properties of an ElementAABBsRequest.
+     * @exports IElementAABBsRequest
+     * @interface IElementAABBsRequest
+     * @property {number|null} [limit] ElementAABBsRequest limit
+     * @property {number|null} [offset] ElementAABBsRequest offset
+     */
+
+    /**
+     * Constructs a new ElementAABBsRequest.
+     * @exports ElementAABBsRequest
+     * @classdesc Represents an ElementAABBsRequest.
+     * @implements IElementAABBsRequest
+     * @constructor
+     * @param {IElementAABBsRequest=} [properties] Properties to set
+     */
+    function ElementAABBsRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementAABBsRequest limit.
+     * @member {number} limit
+     * @memberof ElementAABBsRequest
+     * @instance
+     */
+    ElementAABBsRequest.prototype.limit = 0;
+
+    /**
+     * ElementAABBsRequest offset.
+     * @member {number} offset
+     * @memberof ElementAABBsRequest
+     * @instance
+     */
+    ElementAABBsRequest.prototype.offset = 0;
+
+    /**
+     * Creates a new ElementAABBsRequest instance using the specified properties.
+     * @function create
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {IElementAABBsRequest=} [properties] Properties to set
+     * @returns {ElementAABBsRequest} ElementAABBsRequest instance
+     */
+    ElementAABBsRequest.create = function create(properties) {
+        return new ElementAABBsRequest(properties);
+    };
+
+    /**
+     * Encodes the specified ElementAABBsRequest message. Does not implicitly {@link ElementAABBsRequest.verify|verify} messages.
+     * @function encode
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {IElementAABBsRequest} message ElementAABBsRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBsRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.limit != null && Object.hasOwnProperty.call(message, "limit"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.limit);
+        if (message.offset != null && Object.hasOwnProperty.call(message, "offset"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.offset);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementAABBsRequest message, length delimited. Does not implicitly {@link ElementAABBsRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {IElementAABBsRequest} message ElementAABBsRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBsRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementAABBsRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementAABBsRequest} ElementAABBsRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBsRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementAABBsRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.limit = reader.int32();
+                break;
+            case 2:
+                message.offset = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementAABBsRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementAABBsRequest} ElementAABBsRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBsRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementAABBsRequest message.
+     * @function verify
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementAABBsRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            if (!$util.isInteger(message.limit))
+                return "limit: integer expected";
+        if (message.offset != null && message.hasOwnProperty("offset"))
+            if (!$util.isInteger(message.offset))
+                return "offset: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates an ElementAABBsRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementAABBsRequest} ElementAABBsRequest
+     */
+    ElementAABBsRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementAABBsRequest)
+            return object;
+        var message = new $root.ElementAABBsRequest();
+        if (object.limit != null)
+            message.limit = object.limit | 0;
+        if (object.offset != null)
+            message.offset = object.offset | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementAABBsRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementAABBsRequest
+     * @static
+     * @param {ElementAABBsRequest} message ElementAABBsRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementAABBsRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.limit = 0;
+            object.offset = 0;
+        }
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            object.limit = message.limit;
+        if (message.offset != null && message.hasOwnProperty("offset"))
+            object.offset = message.offset;
+        return object;
+    };
+
+    /**
+     * Converts this ElementAABBsRequest to JSON.
+     * @function toJSON
+     * @memberof ElementAABBsRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementAABBsRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementAABBsRequest;
+})();
+
+$root.ElementAABBsReply = (function() {
+
+    /**
+     * Properties of an ElementAABBsReply.
+     * @exports IElementAABBsReply
+     * @interface IElementAABBsReply
+     * @property {Array.<IElementAABBEntry>|null} [boxes] ElementAABBsReply boxes
+     */
+
+    /**
+     * Constructs a new ElementAABBsReply.
+     * @exports ElementAABBsReply
+     * @classdesc Represents an ElementAABBsReply.
+     * @implements IElementAABBsReply
+     * @constructor
+     * @param {IElementAABBsReply=} [properties] Properties to set
+     */
+    function ElementAABBsReply(properties) {
+        this.boxes = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementAABBsReply boxes.
+     * @member {Array.<IElementAABBEntry>} boxes
+     * @memberof ElementAABBsReply
+     * @instance
+     */
+    ElementAABBsReply.prototype.boxes = $util.emptyArray;
+
+    /**
+     * Creates a new ElementAABBsReply instance using the specified properties.
+     * @function create
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {IElementAABBsReply=} [properties] Properties to set
+     * @returns {ElementAABBsReply} ElementAABBsReply instance
+     */
+    ElementAABBsReply.create = function create(properties) {
+        return new ElementAABBsReply(properties);
+    };
+
+    /**
+     * Encodes the specified ElementAABBsReply message. Does not implicitly {@link ElementAABBsReply.verify|verify} messages.
+     * @function encode
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {IElementAABBsReply} message ElementAABBsReply message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBsReply.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.boxes != null && message.boxes.length)
+            for (var i = 0; i < message.boxes.length; ++i)
+                $root.ElementAABBEntry.encode(message.boxes[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementAABBsReply message, length delimited. Does not implicitly {@link ElementAABBsReply.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {IElementAABBsReply} message ElementAABBsReply message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBsReply.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementAABBsReply message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementAABBsReply} ElementAABBsReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBsReply.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementAABBsReply();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.boxes && message.boxes.length))
+                    message.boxes = [];
+                message.boxes.push($root.ElementAABBEntry.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementAABBsReply message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementAABBsReply} ElementAABBsReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBsReply.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementAABBsReply message.
+     * @function verify
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementAABBsReply.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.boxes != null && message.hasOwnProperty("boxes")) {
+            if (!Array.isArray(message.boxes))
+                return "boxes: array expected";
+            for (var i = 0; i < message.boxes.length; ++i) {
+                var error = $root.ElementAABBEntry.verify(message.boxes[i]);
+                if (error)
+                    return "boxes." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates an ElementAABBsReply message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementAABBsReply} ElementAABBsReply
+     */
+    ElementAABBsReply.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementAABBsReply)
+            return object;
+        var message = new $root.ElementAABBsReply();
+        if (object.boxes) {
+            if (!Array.isArray(object.boxes))
+                throw TypeError(".ElementAABBsReply.boxes: array expected");
+            message.boxes = [];
+            for (var i = 0; i < object.boxes.length; ++i) {
+                if (typeof object.boxes[i] !== "object")
+                    throw TypeError(".ElementAABBsReply.boxes: object expected");
+                message.boxes[i] = $root.ElementAABBEntry.fromObject(object.boxes[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementAABBsReply message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementAABBsReply
+     * @static
+     * @param {ElementAABBsReply} message ElementAABBsReply
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementAABBsReply.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.boxes = [];
+        if (message.boxes && message.boxes.length) {
+            object.boxes = [];
+            for (var j = 0; j < message.boxes.length; ++j)
+                object.boxes[j] = $root.ElementAABBEntry.toObject(message.boxes[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this ElementAABBsReply to JSON.
+     * @function toJSON
+     * @memberof ElementAABBsReply
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementAABBsReply.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementAABBsReply;
+})();
+
+$root.ElementAABBEntry = (function() {
+
+    /**
+     * Properties of an ElementAABBEntry.
+     * @exports IElementAABBEntry
+     * @interface IElementAABBEntry
+     * @property {string|null} [elementId] ElementAABBEntry elementId
+     * @property {number|null} [minX] ElementAABBEntry minX
+     * @property {number|null} [minY] ElementAABBEntry minY
+     * @property {number|null} [minZ] ElementAABBEntry minZ
+     * @property {number|null} [maxX] ElementAABBEntry maxX
+     * @property {number|null} [maxY] ElementAABBEntry maxY
+     * @property {number|null} [maxZ] ElementAABBEntry maxZ
+     */
+
+    /**
+     * Constructs a new ElementAABBEntry.
+     * @exports ElementAABBEntry
+     * @classdesc Represents an ElementAABBEntry.
+     * @implements IElementAABBEntry
+     * @constructor
+     * @param {IElementAABBEntry=} [properties] Properties to set
+     */
+    function ElementAABBEntry(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ElementAABBEntry elementId.
+     * @member {string} elementId
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.elementId = "";
+
+    /**
+     * ElementAABBEntry minX.
+     * @member {number} minX
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.minX = 0;
+
+    /**
+     * ElementAABBEntry minY.
+     * @member {number} minY
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.minY = 0;
+
+    /**
+     * ElementAABBEntry minZ.
+     * @member {number} minZ
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.minZ = 0;
+
+    /**
+     * ElementAABBEntry maxX.
+     * @member {number} maxX
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.maxX = 0;
+
+    /**
+     * ElementAABBEntry maxY.
+     * @member {number} maxY
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.maxY = 0;
+
+    /**
+     * ElementAABBEntry maxZ.
+     * @member {number} maxZ
+     * @memberof ElementAABBEntry
+     * @instance
+     */
+    ElementAABBEntry.prototype.maxZ = 0;
+
+    /**
+     * Creates a new ElementAABBEntry instance using the specified properties.
+     * @function create
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {IElementAABBEntry=} [properties] Properties to set
+     * @returns {ElementAABBEntry} ElementAABBEntry instance
+     */
+    ElementAABBEntry.create = function create(properties) {
+        return new ElementAABBEntry(properties);
+    };
+
+    /**
+     * Encodes the specified ElementAABBEntry message. Does not implicitly {@link ElementAABBEntry.verify|verify} messages.
+     * @function encode
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {IElementAABBEntry} message ElementAABBEntry message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBEntry.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.elementId != null && Object.hasOwnProperty.call(message, "elementId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.elementId);
+        if (message.minX != null && Object.hasOwnProperty.call(message, "minX"))
+            writer.uint32(/* id 2, wireType 1 =*/17).double(message.minX);
+        if (message.minY != null && Object.hasOwnProperty.call(message, "minY"))
+            writer.uint32(/* id 3, wireType 1 =*/25).double(message.minY);
+        if (message.minZ != null && Object.hasOwnProperty.call(message, "minZ"))
+            writer.uint32(/* id 4, wireType 1 =*/33).double(message.minZ);
+        if (message.maxX != null && Object.hasOwnProperty.call(message, "maxX"))
+            writer.uint32(/* id 5, wireType 1 =*/41).double(message.maxX);
+        if (message.maxY != null && Object.hasOwnProperty.call(message, "maxY"))
+            writer.uint32(/* id 6, wireType 1 =*/49).double(message.maxY);
+        if (message.maxZ != null && Object.hasOwnProperty.call(message, "maxZ"))
+            writer.uint32(/* id 7, wireType 1 =*/57).double(message.maxZ);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ElementAABBEntry message, length delimited. Does not implicitly {@link ElementAABBEntry.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {IElementAABBEntry} message ElementAABBEntry message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ElementAABBEntry.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ElementAABBEntry message from the specified reader or buffer.
+     * @function decode
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ElementAABBEntry} ElementAABBEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBEntry.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ElementAABBEntry();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.elementId = reader.string();
+                break;
+            case 2:
+                message.minX = reader.double();
+                break;
+            case 3:
+                message.minY = reader.double();
+                break;
+            case 4:
+                message.minZ = reader.double();
+                break;
+            case 5:
+                message.maxX = reader.double();
+                break;
+            case 6:
+                message.maxY = reader.double();
+                break;
+            case 7:
+                message.maxZ = reader.double();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ElementAABBEntry message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ElementAABBEntry} ElementAABBEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ElementAABBEntry.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ElementAABBEntry message.
+     * @function verify
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ElementAABBEntry.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.elementId != null && message.hasOwnProperty("elementId"))
+            if (!$util.isString(message.elementId))
+                return "elementId: string expected";
+        if (message.minX != null && message.hasOwnProperty("minX"))
+            if (typeof message.minX !== "number")
+                return "minX: number expected";
+        if (message.minY != null && message.hasOwnProperty("minY"))
+            if (typeof message.minY !== "number")
+                return "minY: number expected";
+        if (message.minZ != null && message.hasOwnProperty("minZ"))
+            if (typeof message.minZ !== "number")
+                return "minZ: number expected";
+        if (message.maxX != null && message.hasOwnProperty("maxX"))
+            if (typeof message.maxX !== "number")
+                return "maxX: number expected";
+        if (message.maxY != null && message.hasOwnProperty("maxY"))
+            if (typeof message.maxY !== "number")
+                return "maxY: number expected";
+        if (message.maxZ != null && message.hasOwnProperty("maxZ"))
+            if (typeof message.maxZ !== "number")
+                return "maxZ: number expected";
+        return null;
+    };
+
+    /**
+     * Creates an ElementAABBEntry message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ElementAABBEntry} ElementAABBEntry
+     */
+    ElementAABBEntry.fromObject = function fromObject(object) {
+        if (object instanceof $root.ElementAABBEntry)
+            return object;
+        var message = new $root.ElementAABBEntry();
+        if (object.elementId != null)
+            message.elementId = String(object.elementId);
+        if (object.minX != null)
+            message.minX = Number(object.minX);
+        if (object.minY != null)
+            message.minY = Number(object.minY);
+        if (object.minZ != null)
+            message.minZ = Number(object.minZ);
+        if (object.maxX != null)
+            message.maxX = Number(object.maxX);
+        if (object.maxY != null)
+            message.maxY = Number(object.maxY);
+        if (object.maxZ != null)
+            message.maxZ = Number(object.maxZ);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ElementAABBEntry message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ElementAABBEntry
+     * @static
+     * @param {ElementAABBEntry} message ElementAABBEntry
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ElementAABBEntry.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.elementId = "";
+            object.minX = 0;
+            object.minY = 0;
+            object.minZ = 0;
+            object.maxX = 0;
+            object.maxY = 0;
+            object.maxZ = 0;
+        }
+        if (message.elementId != null && message.hasOwnProperty("elementId"))
+            object.elementId = message.elementId;
+        if (message.minX != null && message.hasOwnProperty("minX"))
+            object.minX = options.json && !isFinite(message.minX) ? String(message.minX) : message.minX;
+        if (message.minY != null && message.hasOwnProperty("minY"))
+            object.minY = options.json && !isFinite(message.minY) ? String(message.minY) : message.minY;
+        if (message.minZ != null && message.hasOwnProperty("minZ"))
+            object.minZ = options.json && !isFinite(message.minZ) ? String(message.minZ) : message.minZ;
+        if (message.maxX != null && message.hasOwnProperty("maxX"))
+            object.maxX = options.json && !isFinite(message.maxX) ? String(message.maxX) : message.maxX;
+        if (message.maxY != null && message.hasOwnProperty("maxY"))
+            object.maxY = options.json && !isFinite(message.maxY) ? String(message.maxY) : message.maxY;
+        if (message.maxZ != null && message.hasOwnProperty("maxZ"))
+            object.maxZ = options.json && !isFinite(message.maxZ) ? String(message.maxZ) : message.maxZ;
+        return object;
+    };
+
+    /**
+     * Converts this ElementAABBEntry to JSON.
+     * @function toJSON
+     * @memberof ElementAABBEntry
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ElementAABBEntry.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ElementAABBEntry;
 })();
 
 module.exports = $root;

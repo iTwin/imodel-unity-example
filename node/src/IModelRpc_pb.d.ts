@@ -25,6 +25,9 @@ export interface IRequestWrapper {
 
     /** RequestWrapper elementPropertiesRequest */
     elementPropertiesRequest?: (IElementPropertiesRequest|null);
+
+    /** RequestWrapper elementAABBsRequest */
+    elementAABBsRequest?: (IElementAABBsRequest|null);
 }
 
 /** Represents a RequestWrapper. */
@@ -60,8 +63,11 @@ export class RequestWrapper implements IRequestWrapper {
     /** RequestWrapper elementPropertiesRequest. */
     public elementPropertiesRequest?: (IElementPropertiesRequest|null);
 
+    /** RequestWrapper elementAABBsRequest. */
+    public elementAABBsRequest?: (IElementAABBsRequest|null);
+
     /** RequestWrapper msg. */
-    public msg?: ("selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest");
+    public msg?: ("selectElementIdsRequest"|"exportMeshesRequest"|"textureRequest"|"elementTooltipRequest"|"projectExtentsRequest"|"cameraViewsRequest"|"elementPropertiesRequest"|"elementAABBsRequest");
 
     /**
      * Creates a new RequestWrapper instance using the specified properties.
@@ -163,6 +169,9 @@ export interface IReplyWrapper {
 
     /** ReplyWrapper elementPropertiesReply */
     elementPropertiesReply?: (IElementPropertiesReply|null);
+
+    /** ReplyWrapper elementAABBsReply */
+    elementAABBsReply?: (IElementAABBsReply|null);
 }
 
 /** Represents a ReplyWrapper. */
@@ -201,8 +210,11 @@ export class ReplyWrapper implements IReplyWrapper {
     /** ReplyWrapper elementPropertiesReply. */
     public elementPropertiesReply?: (IElementPropertiesReply|null);
 
+    /** ReplyWrapper elementAABBsReply. */
+    public elementAABBsReply?: (IElementAABBsReply|null);
+
     /** ReplyWrapper msg. */
-    public msg?: ("selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply");
+    public msg?: ("selectElementIdsReply"|"exportMeshesReply"|"textureReply"|"elementTooltipReply"|"projectExtentsReply"|"cameraViewsReply"|"elementPropertiesReply"|"elementAABBsReply");
 
     /**
      * Creates a new ReplyWrapper instance using the specified properties.
@@ -1752,6 +1764,318 @@ export class ElementPropertiesReplyEntry implements IElementPropertiesReplyEntry
 
     /**
      * Converts this ElementPropertiesReplyEntry to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementAABBsRequest. */
+export interface IElementAABBsRequest {
+
+    /** ElementAABBsRequest limit */
+    limit?: (number|null);
+
+    /** ElementAABBsRequest offset */
+    offset?: (number|null);
+}
+
+/** Represents an ElementAABBsRequest. */
+export class ElementAABBsRequest implements IElementAABBsRequest {
+
+    /**
+     * Constructs a new ElementAABBsRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementAABBsRequest);
+
+    /** ElementAABBsRequest limit. */
+    public limit: number;
+
+    /** ElementAABBsRequest offset. */
+    public offset: number;
+
+    /**
+     * Creates a new ElementAABBsRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementAABBsRequest instance
+     */
+    public static create(properties?: IElementAABBsRequest): ElementAABBsRequest;
+
+    /**
+     * Encodes the specified ElementAABBsRequest message. Does not implicitly {@link ElementAABBsRequest.verify|verify} messages.
+     * @param message ElementAABBsRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementAABBsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementAABBsRequest message, length delimited. Does not implicitly {@link ElementAABBsRequest.verify|verify} messages.
+     * @param message ElementAABBsRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementAABBsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementAABBsRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementAABBsRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementAABBsRequest;
+
+    /**
+     * Decodes an ElementAABBsRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementAABBsRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementAABBsRequest;
+
+    /**
+     * Verifies an ElementAABBsRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementAABBsRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementAABBsRequest
+     */
+    public static fromObject(object: { [k: string]: any }): ElementAABBsRequest;
+
+    /**
+     * Creates a plain object from an ElementAABBsRequest message. Also converts values to other types if specified.
+     * @param message ElementAABBsRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementAABBsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementAABBsRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementAABBsReply. */
+export interface IElementAABBsReply {
+
+    /** ElementAABBsReply boxes */
+    boxes?: (IElementAABBEntry[]|null);
+}
+
+/** Represents an ElementAABBsReply. */
+export class ElementAABBsReply implements IElementAABBsReply {
+
+    /**
+     * Constructs a new ElementAABBsReply.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementAABBsReply);
+
+    /** ElementAABBsReply boxes. */
+    public boxes: IElementAABBEntry[];
+
+    /**
+     * Creates a new ElementAABBsReply instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementAABBsReply instance
+     */
+    public static create(properties?: IElementAABBsReply): ElementAABBsReply;
+
+    /**
+     * Encodes the specified ElementAABBsReply message. Does not implicitly {@link ElementAABBsReply.verify|verify} messages.
+     * @param message ElementAABBsReply message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementAABBsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementAABBsReply message, length delimited. Does not implicitly {@link ElementAABBsReply.verify|verify} messages.
+     * @param message ElementAABBsReply message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementAABBsReply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementAABBsReply message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementAABBsReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementAABBsReply;
+
+    /**
+     * Decodes an ElementAABBsReply message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementAABBsReply
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementAABBsReply;
+
+    /**
+     * Verifies an ElementAABBsReply message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementAABBsReply message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementAABBsReply
+     */
+    public static fromObject(object: { [k: string]: any }): ElementAABBsReply;
+
+    /**
+     * Creates a plain object from an ElementAABBsReply message. Also converts values to other types if specified.
+     * @param message ElementAABBsReply
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementAABBsReply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementAABBsReply to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ElementAABBEntry. */
+export interface IElementAABBEntry {
+
+    /** ElementAABBEntry elementId */
+    elementId?: (string|null);
+
+    /** ElementAABBEntry minX */
+    minX?: (number|null);
+
+    /** ElementAABBEntry minY */
+    minY?: (number|null);
+
+    /** ElementAABBEntry minZ */
+    minZ?: (number|null);
+
+    /** ElementAABBEntry maxX */
+    maxX?: (number|null);
+
+    /** ElementAABBEntry maxY */
+    maxY?: (number|null);
+
+    /** ElementAABBEntry maxZ */
+    maxZ?: (number|null);
+}
+
+/** Represents an ElementAABBEntry. */
+export class ElementAABBEntry implements IElementAABBEntry {
+
+    /**
+     * Constructs a new ElementAABBEntry.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IElementAABBEntry);
+
+    /** ElementAABBEntry elementId. */
+    public elementId: string;
+
+    /** ElementAABBEntry minX. */
+    public minX: number;
+
+    /** ElementAABBEntry minY. */
+    public minY: number;
+
+    /** ElementAABBEntry minZ. */
+    public minZ: number;
+
+    /** ElementAABBEntry maxX. */
+    public maxX: number;
+
+    /** ElementAABBEntry maxY. */
+    public maxY: number;
+
+    /** ElementAABBEntry maxZ. */
+    public maxZ: number;
+
+    /**
+     * Creates a new ElementAABBEntry instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ElementAABBEntry instance
+     */
+    public static create(properties?: IElementAABBEntry): ElementAABBEntry;
+
+    /**
+     * Encodes the specified ElementAABBEntry message. Does not implicitly {@link ElementAABBEntry.verify|verify} messages.
+     * @param message ElementAABBEntry message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IElementAABBEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ElementAABBEntry message, length delimited. Does not implicitly {@link ElementAABBEntry.verify|verify} messages.
+     * @param message ElementAABBEntry message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IElementAABBEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ElementAABBEntry message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ElementAABBEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ElementAABBEntry;
+
+    /**
+     * Decodes an ElementAABBEntry message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ElementAABBEntry
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ElementAABBEntry;
+
+    /**
+     * Verifies an ElementAABBEntry message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ElementAABBEntry message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ElementAABBEntry
+     */
+    public static fromObject(object: { [k: string]: any }): ElementAABBEntry;
+
+    /**
+     * Creates a plain object from an ElementAABBEntry message. Also converts values to other types if specified.
+     * @param message ElementAABBEntry
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ElementAABBEntry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ElementAABBEntry to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

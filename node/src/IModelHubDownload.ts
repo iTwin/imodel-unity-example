@@ -21,7 +21,7 @@ const IMODELHUB_REQUEST_PROPS = {
 
 export async function openIModelFromIModelHub(): Promise<BriefcaseDb> {
   if (IMODELHUB_REQUEST_PROPS.contextId?.length === 0 || IMODELHUB_REQUEST_PROPS.iModelId?.length === 0)
-    return Promise.reject("You must edit IMODELHUB_REQUEST_PROPS in IModelHubDownload.ts");
+    return Promise.reject(new Error("You must edit IMODELHUB_REQUEST_PROPS in IModelHubDownload.ts"));
 
   Logger.logInfo(APP_LOGGER_CATEGORY, "Attempting to sign in");
   const accessToken = await signInWithDesktopClient();

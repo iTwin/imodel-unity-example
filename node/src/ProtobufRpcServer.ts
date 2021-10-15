@@ -6,14 +6,14 @@
 import * as ws from "ws";
 
 import { assert, ClientRequestContext, DbResult, Id64Array, Logger } from "@bentley/bentleyjs-core";
-import { Angle } from "@bentley/geometry-core";
+import { Angle, Range3d } from "@bentley/geometry-core";
 import {
   ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d,
 } from "@bentley/imodeljs-backend";
 import { Presentation } from "@bentley/presentation-backend";
 
 import {
-  ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
+  ICameraViewsReply, IElementAABBsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
   IProjectExtentsReply, IReplyWrapper, ITextureReply, ReplyWrapper, RequestWrapper,
 } from "./IModelRpc_pb";
 import { APP_LOGGER_CATEGORY } from "./Main";
@@ -43,6 +43,7 @@ const protobufRpcRequestHandlers: { [requestName: string]: ProtobufRpcRequestHan
   projectExtentsRequest: handleProjectExtentsRequest,
   cameraViewsRequest: handleCameraViewsRequest,
   elementPropertiesRequest: handleElementPropertiesRequest,
+  elementAABBsRequest: handleElementAABBsRequest,
 };
 
 const onSocketMessage = (socket: ws, iModel: IModelDb) => (data: ws.Data) => {
@@ -222,7 +223,7 @@ async function getElementProperties(socket: ws, iModel: IModelDb, wrapper: Reque
   });
 
   if (!elementProperties)
-    return Promise.reject(`getElementProperties returned undefined for ${request.elementId}`);
+    return Promise.reject(new Error(`getElementProperties returned undefined for ${request.elementId}`));
 
   const rootProperty: IElementPropertiesReplyEntry = { label: elementProperties.label };
   rootProperty.children = parseElementPropertiesMap(elementProperties.items);
@@ -267,4 +268,45 @@ function setValueOrChildrenFromElementPropertiesItem(replyEntry: IElementPropert
     else if (item.valueType === "struct")
       replyEntry.children = parseElementPropertiesList(item.values.map((v) => ({ type: "struct", members: v })));
   }
+}
+
+function handleElementAABBsRequest(socket: ws, iModel: IModelDb, wrapper: RequestWrapper) {
+  const request = wrapper.elementAABBsRequest;
+  assert(!!request);
+
+  const elementAABBsReply: IElementAABBsReply = { boxes: [] };
+
+  const sql = `
+      SELECT
+        ECInstanceId,
+        iModel_placement_aabb(
+          iModel_placement(
+            iModel_point(Origin.X, Origin.Y, Origin.Z),
+            iModel_angles(Yaw, Pitch, Roll),
+            iModel_bbox(BBoxLow.X, BBoxLow.Y, BBoxLow.Z, BBoxHigh.X, BBoxHigh.Y, BBoxHigh.Z)
+          )
+        )
+      FROM bis.GeometricElement3d
+      ORDER BY iModel_bbox_volume(iModel_bbox(BBoxLow.X, BBoxLow.Y, BBoxLow.Z, BBoxHigh.X, BBoxHigh.Y, BBoxHigh.Z)) DESC
+      LIMIT ${request.limit}
+      OFFSET ${request.offset}
+    `;
+
+  iModel.withPreparedStatement(sql, (stmt: ECSqlStatement) => {
+    while (stmt.step() === DbResult.BE_SQLITE_ROW) {
+      const aabb = Range3d.fromArrayBuffer(stmt.getValue(1).getBlob().buffer);
+      assert(!!elementAABBsReply.boxes);
+      elementAABBsReply.boxes.push({
+        elementId: stmt.getValue(0).getId(),
+        minX: aabb.xLow,
+        minY: aabb.yLow,
+        minZ: aabb.zLow,
+        maxX: aabb.xHigh,
+        maxY: aabb.yHigh,
+        maxZ: aabb.zHigh,
+      });
+    }
+  });
+
+  socket.send(encodeReply(wrapper.requestId, { elementAABBsReply }));
 }
