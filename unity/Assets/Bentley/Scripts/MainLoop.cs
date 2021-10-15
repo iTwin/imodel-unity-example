@@ -36,6 +36,27 @@ namespace Bentley
                 _isBackendSetup = true;
                 _coordinateUtility.CalculateOffsetFromProjectExtents();
                 _savedViews.RequestViewsFromBackend();
+
+                var aabbRequestWrapper = new RequestWrapper
+                {
+                    ElementAABBsRequest = new ElementAABBsRequest
+                    {
+                        Limit = 50,
+                        Offset = 0,
+                    }
+                };
+                _backend.SendRequest(aabbRequestWrapper, replyWrapper =>
+                {
+                    foreach (ElementAABBEntry aabb in replyWrapper.ElementAABBsReply.Boxes)
+                    {
+                        // converting min/max instead of corners is safe since transform is just translation
+                        DebugUtil.DrawBoxGizmo(
+                            _coordinateUtility.ConvertPointFromIModel(new Vector3d(aabb.MinX, aabb.MinY, aabb.MinZ)),
+                            _coordinateUtility.ConvertPointFromIModel(new Vector3d(aabb.MaxX, aabb.MaxY, aabb.MaxZ)),
+                            Color.yellow,
+                            1000.0f);
+                    }
+                });
             });
             _coordinateUtility = new CoordinateUtility(_backend);
             _savedViews = new SavedViews(Camera.main, _coordinateUtility, _backend);
@@ -62,30 +83,6 @@ namespace Bentley
             //     var combiner = _meshHandler as ElementMeshCombiner;
             //     if (combiner != null) combiner.FlushAll();
             // }
-
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                var aabbRequestWrapper = new RequestWrapper
-                {
-                    ElementAABBsRequest = new ElementAABBsRequest
-                    {
-                        Limit = 50,
-                        Offset = 0,
-                    }
-                };
-                _backend.SendRequest(aabbRequestWrapper, replyWrapper =>
-                {
-                    foreach (ElementAABBEntry aabb in replyWrapper.ElementAABBsReply.Boxes)
-                    {
-                        // converting min/max instead of corners is safe since transform is just translation
-                        DebugUtil.DrawBoxGizmo(
-                            _coordinateUtility.ConvertPointFromIModel(new Vector3d(aabb.MinX, aabb.MinY, aabb.MinZ)),
-                            _coordinateUtility.ConvertPointFromIModel(new Vector3d(aabb.MaxX, aabb.MaxY, aabb.MaxZ)),
-                            Color.yellow,
-                            1000.0f);
-                    }
-                });
-            }
 
             _backend.OnUpdate();
             _graphicsStreaming.OnUpdate();
