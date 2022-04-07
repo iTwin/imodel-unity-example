@@ -19,7 +19,7 @@ const AUTH_CLIENT_CONFIG_PROPS = {
   clientId: "", // EDIT ME! Specify your own clientId
 
   /** These are the minimum scopes needed - you can leave alone or replace with your own entries */
-  scope: "email openid profile organization itwinjs imodelaccess:read imodels:read",
+  scope: "imodels:read",
   /** This can be left as-is assuming you've followed the instructions in README.md when registering your application */
   redirectUri: "http://localhost:3000/signin-callback",
 };
