@@ -2,7 +2,7 @@
 
 Copyright © Bentley Systems, Incorporated. All rights reserved.
 
-This is an example of using IPC to work with [iModel.js](https://imodeljs.org/)
+This is an example of using IPC to work with [iTwin.js](https://itwinjs.org/)
 in a [Unity](https://unity.com/) application. It includes a demonstration iModel to be used only for
 development purposes.
 
@@ -10,10 +10,10 @@ development purposes.
 
 ### Prerequisites
 
-* Unity 2019.1 or later
-* Node 12
-* Windows
-* MacOS and Linux should work but are untested. Developers on these platforms will need to add the appropriate
+- Unity 2019.4 or later
+- Node 14
+- Windows
+- MacOS and Linux should work but are untested. Developers on these platforms will need to add the appropriate
   version of the [protobuf-compiler](https://developers.google.com/protocol-buffers/docs/downloads)
 
 ### Setup
@@ -27,24 +27,24 @@ npm run build
 
 ### Running
 
-* From the node subdirectory, run `npm start` to start the server.
-* Click Play in the Unity editor to connect to the server.
-* Camera controls match Unity's scene view:
-  * WASD to fly
-  * Hold right-click for mouse-look
-  * Middle mouse to pan
-  * Mouse wheel to zoom
-* Left-clicking an element will display its tooltip by querying the iModel.js backend
-* Arrow keys to cycle through 3D views
+- From the node subdirectory, run `npm start` to start the server.
+- Click Play in the Unity editor to connect to the server.
+- Camera controls match Unity's scene view:
+  - WASD to fly
+  - Hold right-click for mouse-look
+  - Middle mouse to pan
+  - Mouse wheel to zoom
+- Left-clicking an element will display its tooltip by querying the iTwin.js backend
+- Arrow keys to cycle through 3D views
 
 ## How It Works
 
-### Node.js Server With iModel.js
+### Node.js Server With iTwin.js
 
 The Node.js server uses the
-[imodeljs-backend package](https://imodeljs.github.io/iModelJs-docs-output/reference/imodeljs-backend/)
+[core-backend package](https://www.itwinjs.org/reference/core-backend/)
 and its dependencies to open a specified
-[Snapshot iModel](https://imodeljs.github.io/iModelJs-docs-output/learning/backend/accessingimodels/).
+[Snapshot iModel](https://www.itwinjs.org/learning/backend/accessingimodels/).
 Opening an iModel loads a minimal amount of data and takes a small fixed amount of time, regardless of
 how large the iModel is.
 
@@ -71,15 +71,13 @@ process needs to know the message type when parsing. `RequestWrapper` and `Reply
 problem.
 
 This IPC scheme is heavily inspired by [gRPC](https://grpc.io/). This example does not use gRPC due
-to a lack of official TypeScript bindings for generated code and Unity support still being
-experimental.
+to a lack of official TypeScript bindings for generated code and Unity support still being experimental.
 
 ### Element Graphics and Data Are Streamed On-Demand
 
-[Spatial Queries](https://imodeljs.github.io/iModelJs-docs-output/learning/spatialqueries/)
-on the iModel are used to request graphics based on what's visible to the Unity camera.
-The largest elements by volume are sent first, and as the camera moves new graphics are continually
-requested.
+[Spatial Queries](https://www.itwinjs.org/learning/spatialqueries/) on the iModel are used to request
+graphics based on what's visible to the Unity camera. The largest elements by volume are sent first, and
+as the camera moves new graphics are continually requested.
 
 Element properties (commonly referred to as "BIM data") are loaded on demand when an element is selected.
 
@@ -87,28 +85,42 @@ Element properties (commonly referred to as "BIM data") are loaded on demand whe
 
 ### What Is the Purpose of This Example?
 
-This example shows one possible pattern for integrating iModel.js with applications that
+This example shows one possible pattern for integrating iTwin.js with applications that
 aren't full-stack JavaScript/TypeScript. There are no special accomodations for this pattern in
-iModel.js, so feel free to choose an alternative or adapt this strategy as you see fit.
+iTwin.js, so feel free to choose an alternative or adapt this strategy as you see fit.
 
 ### How Do I Update the Protocol Buffer Schema?
 
-* Make changes to [IModelRpc.proto](./node/IModelRpc.proto).
+- Make changes to [IModelRpc.proto](./node/IModelRpc.proto).
   See the [proto3 Language Guide](https://developers.google.com/protocol-buffers/docs/proto3).
-* From the node subdirectory, run
+- From the node subdirectory, run
 
 ```sh
 npm run proto-build
 ```
 
-* The protobuf-generated code in node and unity subdirectories will be updated.
+- The protobuf-generated code in node and unity subdirectories will be updated.
 
 ### How Do I Use iModels From iModelHub?
 
-Edit `IMODELHUB_REQUEST_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDownload.ts) to replace contextId
-and iModelId with the appropriate values for your iModel. Then run:
+Edit `IMODELHUB_REQUEST_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDownload.ts) to replace iTwinId
+and iModelId with the appropriate values for your iModel.
+
+You will also need to provide a clientId, scope and redirectUri for your application. To register an application,
+go to [https://developer.bentley.com/register/](https://developer.bentley.com/register/).
+
+- Add "Visualization" and "Digital Twin Management" as API Associations
+- Select "Desktop/Mobile" as the Application Type
+- Enter "http://localhost:3000/signin-callback" for Redirect URI
+- No logout URI is required
+
+Once your application is created, go to its details page and copy/paste the scope, clientId and redirectUri fields
+into `AUTH_CLIENT_CONFIG_PROPS` in [IModelHubDownload.ts](./node/src/IModelHubDownload.ts).
+
+Finally:
 
 ```sh
+npm run build
 npm run start-from-hub
 ```
 
@@ -117,9 +129,9 @@ npm run start-from-hub
 The example is targeted at producing a desktop executable because it is the most generic and universally
 accessible platform for developers.
 
-However, the project code and its dependencies work on most of the
-platforms that Unity supports. Bentley developers have deployed this example to the Oculus Rift, HTC Vive,
-Oculus Quest, Microsoft HoloLens and other devices.
+However, the project code and its dependencies work on most of the platforms that Unity supports. Bentley
+developers have deployed this example to the Oculus Rift, HTC Vive, Oculus Quest, Microsoft HoloLens and other
+devices.
 
 ### How Can I Improve Performance With This Example?
 
@@ -134,27 +146,23 @@ example of how to combine element meshes for better performance.
 
 #### Spatial Queries and Other Filters
 
-Ideally, an application built on iModel.js would leverage the developer's speciality
-knowledge of their problem domain to apply the advanced filtering tools available in
-iModel.js. See
-[ECSQL](https://imodeljs.github.io/iModelJs-docs-output/learning/ecsql/)
-and especially
-[Spatial Queries](https://imodeljs.github.io/iModelJs-docs-output/learning/spatialqueries/).
+Ideally, an application built on iModel.js would leverage the developer's speciality knowledge of their problem
+domain to apply the advanced filtering tools available in iTwin.js. See [ECSQL](https://www.itwinjs.org/learning/ecsql/)
+and especially [Spatial Queries](https://www.itwinjs.org/learning/spatialqueries/).
 
 #### Dynamic LOD
 
-Because iModels store original geometry representations and not just meshes, it's easy
-and fast to request varying levels of detail.
-See [chordTol in ExportGraphicsProps](https://imodeljs.github.io/iModelJs-docs-output/reference/imodeljs-backend/imodels/exportgraphicsprops/).
+Because iModels store original geometry representations and not just meshes, it's easy and fast to request varying levels of detail.
+See [chordTol in ExportGraphicsOptions](https://www.itwinjs.org/reference/core-backend/imodels/exportgraphicsoptions/).
 
 ### How Can I Do XYZ With This Example?
 
-Please ask any questions on https://github.com/imodeljs/imodeljs/discussions.
+Please ask any questions on [GitHub Discussions](https://github.com/iTwin/itwinjs-core/discussions).
 We are actively supporting interested users of this technology.
 
 ## Contributing
 
-[Contributing to iModel.js](https://github.com/imodeljs/imodeljs/blob/master/CONTRIBUTING.md)
+[Contributing to iTwin.js](https://github.com/iTwin/itwinjs-core/blob/master/CONTRIBUTING.md)
 
 ## Acknowledgements
 
