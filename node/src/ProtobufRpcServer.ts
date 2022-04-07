@@ -4,20 +4,16 @@
 *--------------------------------------------------------------------------------------------*/
 
 import * as ws from "ws";
-
-import { assert, ClientRequestContext, DbResult, Id64Array, Logger } from "@bentley/bentleyjs-core";
-import { Angle } from "@bentley/geometry-core";
+import { ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d } from "@itwin/core-backend";
+import { assert, DbResult, Id64Array, Logger } from "@itwin/core-bentley";
+import { Angle } from "@itwin/core-geometry";
+import { Presentation } from "@itwin/presentation-backend";
+import { ElementPropertiesItem } from "@itwin/presentation-common";
 import {
-  ECSqlStatement, ExportGraphicsInfo, GeometricElement3d, IModelDb, Texture, ViewDefinition3d,
-} from "@bentley/imodeljs-backend";
-import { Presentation } from "@bentley/presentation-backend";
-
-import {
-  ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply,
-  IProjectExtentsReply, IReplyWrapper, ITextureReply, ReplyWrapper, RequestWrapper,
+  ICameraViewsReply, IElementPropertiesReplyEntry, IElementTooltipReply, IExportMeshesReply, IProjectExtentsReply, IReplyWrapper, ITextureReply,
+  ReplyWrapper, RequestWrapper,
 } from "./IModelRpc_pb";
 import { APP_LOGGER_CATEGORY } from "./Main";
-import { ElementPropertiesItem } from "@bentley/presentation-common";
 
 type ProtobufRpcRequestHandler = (socket: ws, iModel: IModelDb, wrapper: RequestWrapper) => void;
 
@@ -218,7 +214,6 @@ async function getElementProperties(socket: ws, iModel: IModelDb, wrapper: Reque
   const elementProperties = await Presentation.getManager().getElementProperties({
     imodel: iModel,
     elementId: request.elementId,
-    requestContext: new ClientRequestContext(),
   });
 
   if (!elementProperties)

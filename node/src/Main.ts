@@ -4,14 +4,12 @@
 *--------------------------------------------------------------------------------------------*/
 
 import * as yargs from "yargs";
-
-import { Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { IModelDb, IModelHost, SnapshotDb } from "@bentley/imodeljs-backend";
-import { Presentation } from "@bentley/presentation-backend";
-import { PresentationUnitSystem } from "@bentley/presentation-common";
-
+import { IModelDb, IModelHost, IModelHostConfiguration, SnapshotDb } from "@itwin/core-backend";
+import { Logger, LogLevel } from "@itwin/core-bentley";
+import { Presentation } from "@itwin/presentation-backend";
 import { openIModelFromIModelHub } from "./IModelHubDownload";
 import { startProtobufRpcServer } from "./ProtobufRpcServer";
+import { BackendIModelsAccess } from "@itwin/imodels-access-backend";
 
 export const APP_LOGGER_CATEGORY = "imodel-unity-example";
 
@@ -27,11 +25,19 @@ const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
   .argv;
 
 (async () => {
-  await IModelHost.startup();
+  const imhConfig: IModelHostConfiguration = {
+    hubAccess: new BackendIModelsAccess(), // needed to download iModels from iModelHub
+    // These tile properties are unused by this application, but are required fields of IModelHostConfiguration.
+    logTileLoadTimeThreshold: IModelHostConfiguration.defaultLogTileLoadTimeThreshold,
+    logTileSizeThreshold: IModelHostConfiguration.defaultLogTileSizeThreshold,
+    tileContentRequestTimeout: IModelHostConfiguration.defaultTileRequestTimeout,
+    tileTreeRequestTimeout: IModelHostConfiguration.defaultTileRequestTimeout,
+  };
+  await IModelHost.startup(imhConfig);
 
   Presentation.initialize();
   Presentation.getManager().activeLocale = "en";
-  Presentation.getManager().activeUnitSystem = PresentationUnitSystem.Metric;
+  Presentation.getManager().activeUnitSystem = "metric";
 
   Logger.initializeToConsole();
   Logger.setLevelDefault(LogLevel.Warning);
@@ -52,4 +58,5 @@ const unityBackendArgs: yargs.Arguments<UnityBackendArgs> = yargs
 
 })().catch((reason) => {
   process.stdout.write(`${reason}\n`);
+  process.exit(1);
 });

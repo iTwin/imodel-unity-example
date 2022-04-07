@@ -15,46 +15,41 @@
   },
   "repository": {},
   "dependencies": {
-    "@bentley/backend-itwin-client": "2.19.0",
-    "@bentley/bentleyjs-core": "2.19.0",
-    "@bentley/ecschema-metadata": "2.19.0",
-    "@bentley/electron-manager": "2.19.0",
-    "@bentley/frontend-authorization-client": "2.19.0",
-    "@bentley/geometry-core": "2.19.0",
-    "@bentley/imodelhub-client": "2.19.0",
-    "@bentley/imodeljs-backend": "2.19.0",
-    "@bentley/imodeljs-common": "2.19.0",
-    "@bentley/imodeljs-frontend": "2.19.0",
-    "@bentley/imodeljs-i18n": "2.19.0",
-    "@bentley/imodeljs-quantity": "2.19.0",
-    "@bentley/itwin-client": "2.19.0",
-    "@bentley/presentation-backend": "2.19.0",
-    "@bentley/presentation-common": "2.19.0",
-    "@bentley/product-settings-client": "2.19.0",
-    "@bentley/rbac-client": "2.19.0",
-    "@bentley/telemetry-client": "2.19.0",
-    "@bentley/ui-abstract": "2.19.0",
-    "@bentley/webgl-compatibility": "2.19.0",
+    "@itwin/appui-abstract": "3.1.2",
+    "@itwin/core-backend": "3.1.2",
+    "@itwin/core-bentley": "3.1.2",
+    "@itwin/core-common": "3.1.2",
+    "@itwin/core-electron": "3.1.2",
+    "@itwin/core-frontend": "3.1.2",
+    "@itwin/core-geometry": "3.1.2",
+    "@itwin/core-i18n": "3.1.2",
+    "@itwin/core-quantity": "3.1.2",
+    "@itwin/ecschema-metadata": "3.1.2",
+    "@itwin/presentation-backend": "3.1.2",
+    "@itwin/presentation-common": "3.1.2",
+    "@itwin/webgl-compatibility": "3.1.2",
+    "@itwin/imodels-access-backend": "^1.0.1",
+    "@itwin/node-cli-authorization": "^0.9.0",
     "protobufjs": "~6.10.2",
     "ws": "^7.4.6",
     "yargs": "^15.0.0"
   },
   "devDependencies": {
-    "@bentley/build-tools": "2.19.0",
-    "@bentley/eslint-plugin": "2.19.0",
+    "@itwin/build-tools": "3.1.2",
+    "@itwin/eslint-plugin": "3.1.2",
     "@types/node": "^10.14.1",
     "@types/ws": "^6.0.4",
     "@types/yargs": "^12.0.13",
     "cpx": "^1.5.0",
-    "eslint": "^6.8.0",
-    "rimraf": "^2.6.2",
-    "typescript": "~4.3.0"
+    "eslint": "^7.11.0",
+    "rimraf": "^3.0.2",
+    "typescript": "~4.4.0"
   },
   "eslintConfig": {
     "plugins": [
-      "@bentley"
+      "@itwin"
     ],
     "ignorePatterns": "src/IModelRpc_pb.d.ts",
-    "extends": "plugin:@bentley/imodeljs-recommended"
+    "extends": "plugin:@itwin/itwinjs-recommended"
   }
 }

@@ -3,46 +3,46 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { Logger } from "@bentley/bentleyjs-core";
-import { ElectronAuthorizationBackend } from "@bentley/electron-manager/lib/ElectronBackend";
-import {
-  AuthorizedBackendRequestContext, BriefcaseDb, BriefcaseManager,
-} from "@bentley/imodeljs-backend";
-import { LocalBriefcaseProps } from "@bentley/imodeljs-common";
-import { AccessToken } from "@bentley/itwin-client";
-
+import { BriefcaseDb, BriefcaseManager, IModelHost } from "@itwin/core-backend";
+import { Logger } from "@itwin/core-bentley";
+import { BriefcaseIdValue, LocalBriefcaseProps } from "@itwin/core-common";
+import { NodeCliAuthorizationClient } from "@itwin/node-cli-authorization";
 import { APP_LOGGER_CATEGORY } from "./Main";
 
-// Find your context and iModel IDs at https://www.itwinjs.org/getting-started/registration-dashboard/?tab=1
+// Find your iTwin and iModel IDs at https://developer.bentley.com/my-imodels/
 const IMODELHUB_REQUEST_PROPS = {
-  contextId: "",  // EDIT ME! Specify your own contextId
-  iModelId: "",   // EDIT ME! Specify your own iModelId
+  iTwinId: "", // EDIT ME! Specify your own iTwinId
+  iModelId: "", // EDIT ME! Specify your own iModelId
+};
+
+const AUTH_CLIENT_CONFIG_PROPS = {
+  clientId: "", // EDIT ME! Specify your own clientId
+
+  /** These are the minimum scopes needed - you can leave alone or replace with your own entries */
+  scope: "email openid profile organization itwinjs imodelaccess:read imodels:read",
+  /** This can be left as-is assuming you've followed the instructions in README.md when registering your application */
+  redirectUri: "http://localhost:3000/signin-callback",
 };
 
 export async function openIModelFromIModelHub(): Promise<BriefcaseDb> {
-  if (IMODELHUB_REQUEST_PROPS.contextId?.length === 0 || IMODELHUB_REQUEST_PROPS.iModelId?.length === 0)
-    return Promise.reject("You must edit IMODELHUB_REQUEST_PROPS in IModelHubDownload.ts");
+  if (!AUTH_CLIENT_CONFIG_PROPS.clientId || !AUTH_CLIENT_CONFIG_PROPS.scope || !AUTH_CLIENT_CONFIG_PROPS.redirectUri)
+    return Promise.reject("You must edit AUTH_CLIENT_CONFIG in IModelHubDownload.ts");
 
+  const authorizationClient = new NodeCliAuthorizationClient({ ...AUTH_CLIENT_CONFIG_PROPS });
   Logger.logInfo(APP_LOGGER_CATEGORY, "Attempting to sign in");
-  const accessToken = await signInWithDesktopClient();
-  const authContext = new AuthorizedBackendRequestContext(accessToken);
+  await authorizationClient.signIn();
   Logger.logInfo(APP_LOGGER_CATEGORY, "Sign in successful");
+  IModelHost.authorizationClient = authorizationClient;
+
+  if (!IMODELHUB_REQUEST_PROPS.iTwinId || !IMODELHUB_REQUEST_PROPS.iModelId)
+    return Promise.reject("You must edit IMODELHUB_REQUEST_PROPS in IModelHubDownload.ts");
 
   let briefcaseProps: LocalBriefcaseProps | undefined = getBriefcaseFromCache();
   if (!briefcaseProps)
-    briefcaseProps = await downloadBriefcase(authContext);
+    briefcaseProps = await downloadBriefcase();
 
-  return BriefcaseDb.open(authContext, { fileName: briefcaseProps.fileName, readonly: true });
-}
-
-async function signInWithDesktopClient(): Promise<AccessToken> {
-  const client = new ElectronAuthorizationBackend();
-  await client.initialize({
-    clientId: "imodeljs-electron-samples",
-    redirectUri: "http://localhost:3000/signin-callback",
-    scope: "openid imodelhub context-registry-service:read-only urlps-third-party offline_access",
-  });
-  return client.signInComplete();
+  const briefcaseResult = BriefcaseDb.open({ fileName: briefcaseProps.fileName, readonly: true });
+  return briefcaseResult;
 }
 
 function getBriefcaseFromCache(): LocalBriefcaseProps | undefined {
@@ -57,8 +57,8 @@ function getBriefcaseFromCache(): LocalBriefcaseProps | undefined {
   return cachedBriefcases[0];
 }
 
-async function downloadBriefcase(authContext: AuthorizedBackendRequestContext): Promise<LocalBriefcaseProps> {
-  Logger.logInfo(APP_LOGGER_CATEGORY, `Downloading new briefcase for contextId ${IMODELHUB_REQUEST_PROPS.contextId} iModelId ${IMODELHUB_REQUEST_PROPS.iModelId}`);
+async function downloadBriefcase(): Promise<LocalBriefcaseProps> {
+  Logger.logInfo(APP_LOGGER_CATEGORY, `Downloading new briefcase for iTwinId ${IMODELHUB_REQUEST_PROPS.iTwinId} iModelId ${IMODELHUB_REQUEST_PROPS.iModelId}`);
 
   let nextProgressUpdate = new Date().getTime() + 2000; // too spammy without some throttling
   const onProgress = (loadedBytes: number, totalBytes: number): number => {
@@ -72,5 +72,5 @@ async function downloadBriefcase(authContext: AuthorizedBackendRequestContext): 
     return 0;
   };
 
-  return BriefcaseManager.downloadBriefcase(authContext, { ...IMODELHUB_REQUEST_PROPS, onProgress, briefcaseId: 0 });
+  return BriefcaseManager.downloadBriefcase({ ...IMODELHUB_REQUEST_PROPS, onProgress, briefcaseId: BriefcaseIdValue.Unassigned });
 }
