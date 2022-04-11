@@ -10,7 +10,7 @@ development purposes.
 
 ### Prerequisites
 
-- Unity 2019.4 or later
+- Unity 2020.3 or later
 - Node 14
 - Windows
 - MacOS and Linux should work but are untested. Developers on these platforms will need to add the appropriate
