@@ -11,7 +11,7 @@ development purposes.
 ### Prerequisites
 
 - Unity 2020.3 or later
-- Node 14
+- Node 16
 - Windows
 - MacOS and Linux should work but are untested. Developers on these platforms will need to add the appropriate
   version of the [protobuf-compiler](https://developers.google.com/protocol-buffers/docs/downloads)
