@@ -19,7 +19,7 @@
     "@itwin/core-backend": "3.2.4",
     "@itwin/core-bentley": "3.2.4",
     "@itwin/core-common": "3.2.4",
-    "@itwin/core-electron": "3.2.4",
+    "@itwin/core-electron": "3.7.5",
     "@itwin/core-frontend": "3.2.4",
     "@itwin/core-geometry": "3.2.4",
     "@itwin/core-i18n": "3.2.4",
